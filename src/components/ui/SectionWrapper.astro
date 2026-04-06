@@ -1,0 +1,36 @@
+---
+interface Props {
+  variant?: 'dark' | 'light';
+  texture?: boolean;
+  textureOpacity?: number;
+  class?: string;
+  id?: string;
+}
+
+const {
+  variant = 'light',
+  texture = true,
+  textureOpacity,
+  class: className,
+  id,
+} = Astro.props;
+
+const isDark = variant === 'dark';
+const opacity = textureOpacity ?? (isDark ? 0.08 : 0.12);
+
+---
+
+<section
+  id={id}
+  class:list={[
+    'relative overflow-hidden py-12 lg:py-20',
+    isDark ? 'bg-vinho text-offwhite' : 'bg-offwhite text-vinho',
+    texture && 'texture-paper',
+    className,
+  ]}
+  style={texture ? `--texture-opacity: ${opacity}` : undefined}
+>
+  <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+    <slot />
+  </div>
+</section>

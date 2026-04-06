@@ -1,0 +1,163 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import ScanChat from '../components/scan/ScanChat';
+import '../styles/global.css';
+
+export const prerender = false;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Scan de Autoridade Cadarn — Seu marketing analisado em 4 pilares. Score de 0 a 100. Gratuito." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Scan de Autoridade Cadarn — Posicionamento Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body class="flex min-h-screen flex-col bg-navy text-offwhite">
+    <Header />
+
+    <!-- Landing pré-chat -->
+    <main id="scan-landing" class="flex-1 pt-20 pb-12">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+
+        <!-- Hero -->
+        <div class="flex flex-col items-center text-center">
+          <div class="glow-caramelo mb-4">
+            <img src="/logo-splash.png" alt="Cadarn" class="h-20 w-20 object-contain" />
+          </div>
+          <h1 class="font-headline text-3xl font-bold sm:text-4xl lg:text-5xl">
+            Scan <span class="text-caramelo">Cadarn</span>
+          </h1>
+          <p class="mt-3 max-w-md font-body text-base text-offwhite/60">
+            Seu marketing analisado em 4 pilares. Score de 0 a 100. Gratuito.
+          </p>
+          <p class="mt-1 font-mono text-xs uppercase tracking-widest text-offwhite/30">
+            5 minutos · Sem compromisso
+          </p>
+        </div>
+
+        <!-- 4 Pilares -->
+        <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div class="border border-offwhite/10 p-6">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="font-mono text-2xl font-bold text-caramelo">01</span>
+              <h3 class="font-headline text-lg font-bold">Buscabilidade</h3>
+            </div>
+            <p class="font-body text-sm text-offwhite/50">
+              Seu perfil aparece quando alguém busca seu serviço na sua cidade? Palavras-chave, localização, SEO do perfil.
+            </p>
+          </div>
+
+          <div class="border border-offwhite/10 p-6">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="font-mono text-2xl font-bold text-caramelo">02</span>
+              <h3 class="font-headline text-lg font-bold">Promessa da Bio</h3>
+            </div>
+            <p class="font-body text-sm text-offwhite/50">
+              Sua bio vende commodity ou autoridade? A diferença entre atrair quem compara preço e quem busca valor.
+            </p>
+          </div>
+
+          <div class="border border-offwhite/10 p-6">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="font-mono text-2xl font-bold text-caramelo">03</span>
+              <h3 class="font-headline text-lg font-bold">Fricção de Funil</h3>
+            </div>
+            <p class="font-body text-sm text-offwhite/50">
+              Do perfil ao WhatsApp — quantos cliques? Cada clique a mais é um cliente de alto valor que desiste.
+            </p>
+          </div>
+
+          <div class="border border-offwhite/10 p-6">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="font-mono text-2xl font-bold text-caramelo">04</span>
+              <h3 class="font-headline text-lg font-bold">Imagem de Comando</h3>
+            </div>
+            <p class="font-body text-sm text-offwhite/50">
+              Seu perfil transmite autoridade? Consistência visual, foto profissional, destaques organizados.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-14 flex flex-col items-center">
+          <button
+            id="btn-iniciar-scan"
+            class="shimmer border border-caramelo bg-caramelo/20 px-10 py-4 font-headline text-base font-bold uppercase tracking-widest text-caramelo transition-all duration-200 hover:bg-caramelo/30"
+          >
+            Iniciar meu Scan
+          </button>
+          <p class="mt-4 max-w-sm text-center font-body text-xs text-offwhite/30">
+            Você vai conversar com nosso Analista de Autoridade. Ele vai analisar seu posicionamento digital e gerar seu Score de Autoridade Cadarn.
+          </p>
+        </div>
+
+        <!-- Exemplo de resultado -->
+        <div class="mt-16 border border-offwhite/10 p-6 sm:p-8">
+          <p class="mb-4 font-mono text-xs uppercase tracking-widest text-caramelo/60">
+            Exemplo de resultado
+          </p>
+          <div class="flex items-center gap-4 mb-6">
+            <span class="font-mono text-4xl font-bold text-caramelo">43</span>
+            <span class="font-mono text-sm text-offwhite/40">/100</span>
+          </div>
+          <div class="space-y-3">
+            {[
+              { pilar: 'Buscabilidade', score: 8, max: 25 },
+              { pilar: 'Promessa da Bio', score: 12, max: 25 },
+              { pilar: 'Fricção de Funil', score: 15, max: 25 },
+              { pilar: 'Imagem de Comando', score: 8, max: 25 },
+            ].map((item) => (
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-body text-xs text-offwhite/60">{item.pilar}</span>
+                  <span class="font-mono text-xs text-offwhite/40">{item.score}/{item.max}</span>
+                </div>
+                <div class="h-1.5 w-full bg-offwhite/10">
+                  <div
+                    class="h-full bg-caramelo/60"
+                    style={`width: ${(item.score / item.max) * 100}%`}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <Footer />
+
+    <!-- Chat (lazy-loaded, hidden until started) -->
+    <div id="scan-chat-container" class="hidden">
+      <ScanChat client:only="react" />
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('btn-iniciar-scan');
+        const landing = document.getElementById('scan-landing');
+        const chatContainer = document.getElementById('scan-chat-container');
+        const header = document.querySelector('header');
+        const footer = document.querySelector('footer');
+
+        btn?.addEventListener('click', () => {
+          landing?.classList.add('hidden');
+          header?.classList.add('hidden');
+          footer?.classList.add('hidden');
+          chatContainer?.classList.remove('hidden');
+
+          // Trigger React component start
+          window.dispatchEvent(new CustomEvent('scan-start'));
+        });
+      });
+    </script>
+  </body>
+</html>

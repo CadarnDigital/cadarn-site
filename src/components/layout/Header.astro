@@ -1,0 +1,46 @@
+---
+import MobileMenu from './MobileMenu';
+
+const navLinks = [
+  { href: '/metodo', label: 'Método' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/portfolio', label: 'Portfolio' },
+];
+
+const navItems = [
+  ...navLinks,
+  { href: '/scan', label: 'Scan' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-navy/95 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-content items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+    <a href="/" class="flex items-center gap-2">
+      <img src="/logo-splash.png" alt="" style="height:44px;width:auto;" />
+      <span class="font-headline text-xl font-bold uppercase tracking-[0.2em] text-offwhite">Cadarn</span>
+      <span class="font-headline text-xs font-medium uppercase tracking-[0.2em] text-caramelo/70">Martech</span>
+    </a>
+
+    <nav class="hidden lg:flex items-center gap-4" aria-label="Navegação principal">
+      {navLinks.map((item) => (
+        <a
+          href={item.href}
+          class="font-headline text-xs uppercase tracking-widest text-offwhite/70 px-3 py-1.5 transition-colors duration-200 hover:text-caramelo"
+        >
+          {item.label}
+        </a>
+      ))}
+      <a
+        href="/scan"
+        class="font-headline text-xs uppercase tracking-widest bg-caramelo px-5 py-1.5 text-navy font-bold transition-colors duration-200 hover:bg-caramelo/90"
+      >
+        Scan de Autoridade
+      </a>
+    </nav>
+
+    <div class="lg:hidden">
+      <MobileMenu navItems={navItems} client:load />
+    </div>
+  </div>
+</header>

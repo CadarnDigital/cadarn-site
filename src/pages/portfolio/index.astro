@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionWrapper from '../../components/ui/SectionWrapper.astro';
+import CTABlock from '../../components/ui/CTABlock.astro';
+---
+
+<BaseLayout title="Portfolio" description="Cases e resultados reais da Cadarn Martech">
+  <SectionWrapper variant="dark">
+    <h1 class="font-headline text-4xl font-bold lg:text-5xl">Portfolio</h1>
+  </SectionWrapper>
+  <SectionWrapper variant="light">
+    <div class="py-12 text-center">
+      <p class="text-lg text-vinho/70">Cases em preparação. Quer ser o próximo?</p>
+      <CTABlock variant="inline" text="Faça seu Scan de Autoridade" class="mt-4" />
+    </div>
+  </SectionWrapper>
+</BaseLayout>

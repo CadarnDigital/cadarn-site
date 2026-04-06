@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionWrapper from '../../components/ui/SectionWrapper.astro';
+import CTABlock from '../../components/ui/CTABlock.astro';
+---
+
+<BaseLayout title="Blog" description="Artigos sobre Marketing, Gestão e Growth para prestadores de serviço premium">
+  <SectionWrapper variant="dark">
+    <h1 class="font-headline text-4xl font-bold lg:text-5xl">Blog</h1>
+  </SectionWrapper>
+  <SectionWrapper variant="light">
+    <div class="py-12 text-center">
+      <p class="text-lg text-vinho/70">Estamos preparando conteúdo de verdade. Enquanto isso:</p>
+      <CTABlock variant="inline" text="Faça seu Scan de Autoridade" class="mt-4" />
+    </div>
+  </SectionWrapper>
+</BaseLayout>

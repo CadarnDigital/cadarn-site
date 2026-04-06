@@ -1,0 +1,48 @@
+---
+interface Props {
+  id: string;
+  variant?: 'vinho' | 'navy' | 'offwhite' | 'navy-deep';
+  peek?: boolean;
+  index?: number;
+  class?: string;
+}
+
+const {
+  id,
+  variant = 'navy',
+  peek = true,
+  index = 0,
+  class: className,
+} = Astro.props;
+
+const bgMap: Record<string, string> = {
+  vinho: 'bg-vinho text-offwhite',
+  navy: 'bg-navy text-offwhite',
+  'navy-deep': 'bg-[#0a1e36] text-offwhite',
+  offwhite: 'bg-offwhite text-vinho',
+};
+
+const peekShadow: Record<string, string> = {
+  vinho: 'shadow-[0_-8px_30px_rgba(94,15,11,0.4)]',
+  navy: 'shadow-[0_-8px_30px_rgba(14,42,74,0.4)]',
+  'navy-deep': 'shadow-[0_-8px_30px_rgba(10,30,54,0.4)]',
+  offwhite: 'shadow-[0_-8px_30px_rgba(0,0,0,0.08)]',
+};
+---
+
+<section
+  id={id}
+  class:list={[
+    'relative min-h-screen scroll-snap-section overflow-hidden',
+    bgMap[variant],
+    peek && index > 0 && 'rounded-t-3xl -mt-[10vh]',
+    peek && index > 0 && peekShadow[variant],
+    className,
+  ]}
+  style={`z-index: ${10 + index};`}
+>
+  <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+    <slot />
+  </div>
+  <slot name="background" />
+</section>

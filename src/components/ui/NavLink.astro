@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string;
+  active?: boolean;
+  class?: string;
+}
+
+const { href, active = false, class: className } = Astro.props;
+const isActive = active || Astro.url.pathname === href;
+---
+
+<a
+  href={href}
+  class:list={[
+    'font-headline text-sm font-semibold uppercase tracking-widest transition-colors duration-200',
+    isActive ? 'text-caramelo' : 'text-offwhite hover:text-caramelo',
+    className,
+  ]}
+>
+  <slot />
+</a>

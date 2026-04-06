@@ -1,0 +1,26 @@
+---
+/**
+ * Tipografia oversized vertical — ref: Grupo Permaneo
+ * Palavras gigantes em caramelo, layout editorial assimétrico.
+ */
+interface Props {
+  text: string;
+  vertical?: boolean;
+  class?: string;
+}
+
+const { text, vertical = false, class: className } = Astro.props;
+---
+
+<span
+  class:list={[
+    'block font-headline font-bold uppercase text-caramelo',
+    vertical
+      ? 'text-6xl lg:text-8xl [writing-mode:vertical-rl] [text-orientation:mixed]'
+      : 'text-6xl lg:text-[8rem] xl:text-[10rem] leading-none tracking-tight',
+    className,
+  ]}
+  aria-hidden="true"
+>
+  {text}
+</span>

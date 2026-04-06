@@ -1,0 +1,54 @@
+---
+interface Props {
+  variant?: 'blog' | 'case' | 'team' | 'portfolio';
+  class?: string;
+}
+
+const { variant = 'blog', class: className } = Astro.props;
+---
+
+{variant === 'portfolio' ? (
+  <article
+    class:list={[
+      'group relative aspect-square overflow-hidden rounded-none',
+      className,
+    ]}
+  >
+    {/* Foto P&B do cliente */}
+    <div class="absolute inset-0 grayscale">
+      <slot name="image" />
+    </div>
+    {/* Overlay navy com logo */}
+    <div class="absolute inset-0 bg-navy/70 transition-opacity duration-300 group-hover:bg-navy/90" />
+    <div class="absolute inset-0 flex items-center justify-center">
+      <slot name="logo" />
+    </div>
+    {/* Desktop: hover revela info. Mobile: info sempre visível abaixo */}
+    <div class="hidden md:flex absolute inset-0 flex-col items-center justify-center p-6 text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <slot />
+    </div>
+    <div class="md:hidden absolute bottom-0 left-0 right-0 bg-navy/90 p-4 text-center">
+      <slot name="mobile-info" />
+    </div>
+  </article>
+) : (
+  <article
+    class:list={[
+      'group rounded-none bg-offwhite shadow-card transition-all duration-200 hover:shadow-card-hover',
+      className,
+    ]}
+  >
+    {variant === 'team' ? (
+      <div class="mx-auto mt-6 mb-4 h-24 w-24 rounded-full bg-navy/10 overflow-hidden">
+        <slot name="image" />
+      </div>
+    ) : (
+      <div class="aspect-[16/9] bg-navy/10 overflow-hidden">
+        <slot name="image" />
+      </div>
+    )}
+    <div class={variant === 'team' ? 'px-6 pb-6 text-center' : 'p-5'}>
+      <slot />
+    </div>
+  </article>
+)}

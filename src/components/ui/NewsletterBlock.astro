@@ -1,0 +1,34 @@
+---
+/**
+ * Captação de email — ref: Camila Renaux
+ * Bloco offwhite, título navy, botão vinho, copy visceral.
+ */
+import { Button } from './Button';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['bg-offwhite border-t border-b border-caramelo/30 py-12 lg:py-16', className]}>
+  <div class="mx-auto max-w-article px-4 text-center">
+    <h3 class="font-headline text-2xl font-bold text-vinho lg:text-3xl">
+      Conteúdo que separa quem sabe de quem acha que sabe.
+    </h3>
+    <p class="mt-3 font-body text-vinho/70">
+      Direto na caixa. Sem spam, sem fórmula mágica.
+    </p>
+    <form class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <input
+        type="email"
+        name="email"
+        placeholder="seu@email.com"
+        required
+        class="w-full rounded-sm border border-vinho/20 bg-offwhite px-4 py-3 font-body text-vinho placeholder:text-vinho/40 focus:border-caramelo focus:outline-none focus:ring-1 focus:ring-caramelo sm:max-w-xs"
+      />
+      <Button variant="primary" type="submit">Quero receber</Button>
+    </form>
+  </div>
+</div>

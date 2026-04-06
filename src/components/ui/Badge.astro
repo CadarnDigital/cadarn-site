@@ -1,0 +1,36 @@
+---
+type BandeiraKey = 'roi' | 'amadorismo' | 'branding' | 'hibrida' | 'radical';
+
+interface Props {
+  category: BandeiraKey;
+  class?: string;
+}
+
+const { category, class: className } = Astro.props;
+
+const labels: Record<BandeiraKey, string> = {
+  roi: 'ROI Real',
+  amadorismo: 'Fim do Amadorismo',
+  branding: 'Branding como Escudo',
+  hibrida: 'Inteligência Híbrida',
+  radical: 'Protagonismo Radical',
+};
+
+const colors: Record<BandeiraKey, string> = {
+  roi: 'bg-bandeira-roi text-offwhite',
+  amadorismo: 'bg-bandeira-amador text-offwhite',
+  branding: 'bg-navy text-offwhite border-l-2 border-caramelo',
+  hibrida: 'bg-bandeira-hibrida text-offwhite',
+  radical: 'bg-bandeira-radical text-offwhite',
+};
+---
+
+<span
+  class:list={[
+    'inline-block rounded-none px-3 py-1 text-xs font-headline font-semibold uppercase tracking-wider',
+    colors[category],
+    className,
+  ]}
+>
+  {labels[category]}
+</span>

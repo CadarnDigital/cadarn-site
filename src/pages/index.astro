@@ -1,0 +1,244 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionWrapper from '../components/ui/SectionWrapper.astro';
+import { Button } from '../components/ui/Button';
+import CTABlock from '../components/ui/CTABlock.astro';
+import Card from '../components/ui/Card.astro';
+import Badge from '../components/ui/Badge.astro';
+import OversizedText from '../components/ui/OversizedText.astro';
+import Divider from '../components/ui/Divider.astro';
+import NewsletterBlock from '../components/ui/NewsletterBlock.astro';
+import PhotoPlaceholder from '../components/ui/PhotoPlaceholder.astro';
+
+const HERO_PHRASE = 'Do caos ao método.\nDo método ao lucro.\nDo lucro à liberdade.';
+
+const numeros = [
+  { valor: '6', label: 'etapas proprietárias' },
+  { valor: '7', label: 'dias para o diagnóstico' },
+  { valor: '4', label: 'pilares de análise' },
+];
+
+const dores = [
+  { titulo: 'Investe e não sabe o que volta', desc: 'Tráfego, postagens, agência — e nenhuma métrica real de retorno.' },
+  { titulo: 'Depende de indicação', desc: 'Cresce quando indica. Para quando não. Zero previsibilidade.' },
+  { titulo: 'Faz tudo sozinho', desc: 'Marketing, vendas, operação — você é o gargalo do próprio negócio.' },
+];
+
+const triade = [
+  { pilar: 'Marketing', desc: 'Autoridade que gera demanda qualificada.', cor: 'border-l-vinho' },
+  { pilar: 'Gestão', desc: 'Processos que geram previsibilidade.', cor: 'border-l-navy' },
+  { pilar: 'Growth', desc: 'Funil que gera escala mensurável.', cor: 'border-l-caramelo' },
+];
+
+const blogPreviews = [
+  { titulo: 'Por que seu marketing não gera resultado', categoria: 'roi' as const, excerpt: 'O problema não é falta de investimento — é falta de método.' },
+  { titulo: 'O mito do marketing criativo', categoria: 'amadorismo' as const, excerpt: 'Criatividade sem estratégia é entretenimento.' },
+  { titulo: 'Branding não é logo', categoria: 'branding' as const, excerpt: 'Sua marca é a promessa que você cumpre.' },
+];
+---
+
+<BaseLayout title="Home">
+
+  <!-- ═══ HERO — Split assimétrico: texto 60% + foto tríade 40% ═══ -->
+  <SectionWrapper variant="dark" class="!py-0">
+    <div class="grid min-h-[85vh] grid-cols-1 items-center gap-8 py-12 lg:grid-cols-5 lg:gap-16 lg:py-0">
+      <!-- Texto -->
+      <div class="lg:col-span-3">
+        <p class="font-body text-xs uppercase tracking-[0.3em] text-caramelo">Engenharia de Receita</p>
+        <h1 class="mt-4 font-headline text-4xl font-bold leading-[1.1] lg:text-5xl xl:text-6xl">
+          {HERO_PHRASE.split('\n').map((line, i) => (
+            <Fragment>
+              {i > 0 && <br />}
+              {line}
+            </Fragment>
+          ))}
+        </h1>
+        <p class="mt-6 max-w-lg font-body text-lg text-offwhite/60">
+          Marketing, gestão e growth integrados num sistema único para prestadores de serviço premium.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <Button variant="secondary" size="lg" href="/scan">Faça seu Scan de Autoridade</Button>
+          <Button variant="ghost" size="md" href="/metodo">Conheça o Método →</Button>
+        </div>
+      </div>
+      <!-- Foto tríade -->
+      <div class="lg:col-span-2">
+        <PhotoPlaceholder label="Foto Tríade — Fabiano, Samira, Gui" aspect="portrait" class="rounded-none" />
+      </div>
+    </div>
+
+    <!-- Bússola decorativa de fundo (sutil) -->
+    <div class="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 opacity-[0.03]">
+      <img src="/logo-splash.png" alt="" class="h-[600px] w-[600px]" aria-hidden="true" />
+    </div>
+  </SectionWrapper>
+
+  <!-- ═══ NÚMEROS — Faixa de impacto visual ═══ -->
+  <div class="bg-navy py-8 lg:py-10">
+    <div class="mx-auto flex max-w-content flex-col items-center justify-center gap-8 px-4 sm:flex-row sm:gap-16 lg:gap-24">
+      {numeros.map((n) => (
+        <div class="text-center">
+          <span class="font-headline text-5xl font-bold text-caramelo lg:text-6xl">{n.valor}</span>
+          <p class="mt-1 font-body text-xs uppercase tracking-widest text-offwhite/50">{n.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- ═══ DOR — Layout staggered, não grid uniforme ═══ -->
+  <SectionWrapper variant="light" class="!py-16 lg:!py-28" id="dor">
+    <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
+      <!-- Lado esquerdo: headline + copy visceral -->
+      <div class="lg:sticky lg:top-24">
+        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Soa familiar?</p>
+        <h2 class="mt-3 font-headline text-3xl font-bold leading-tight lg:text-4xl">
+          Você trabalha mais<br />do que deveria.<br />
+          E lucra menos<br />do que <span class="font-accent italic text-caramelo">merece.</span>
+        </h2>
+      </div>
+      <!-- Lado direito: cards de dor escalonados -->
+      <div class="space-y-6">
+        {dores.map((dor, i) => (
+          <div class:list={[
+            'border-l-2 border-vinho/20 pl-6 transition-all duration-200 hover:border-caramelo',
+            i === 1 && 'lg:ml-8',
+            i === 2 && 'lg:ml-16',
+          ]}>
+            <h3 class="font-headline text-xl font-bold">{dor.titulo}</h3>
+            <p class="mt-1 font-body text-vinho/60">{dor.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- ═══ TRANSIÇÃO — Citação fullbleed com respiro ═══ -->
+  <div class="bg-vinho py-16 lg:py-24">
+    <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-8 lg:gap-16">
+        <OversizedText text="M" class="hidden lg:block shrink-0 !text-[12rem] !text-caramelo/10" />
+        <blockquote>
+          <p class="font-accent text-2xl italic leading-relaxed text-offwhite/80 lg:text-4xl">
+            "Não é sobre fazer mais marketing.<br />
+            É sobre fazer o marketing <span class="text-caramelo">certo.</span>"
+          </p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TRÍADE — Split com foto Samira ═══ -->
+  <SectionWrapper variant="light" class="!py-16 lg:!py-28" id="triade">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+      <!-- Foto Samira -->
+      <div class="order-2 lg:order-1">
+        <PhotoPlaceholder label="Foto Samira — em ação, branding" aspect="square" />
+      </div>
+      <!-- Conteúdo -->
+      <div class="order-1 lg:order-2">
+        <p class="font-body text-sm uppercase tracking-widest text-caramelo">A solução</p>
+        <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
+          Três pilares.<br />Um sistema.
+        </h2>
+        <div class="mt-10 space-y-6">
+          {triade.map((item) => (
+            <div class:list={['border-l-4 pl-6', item.cor]}>
+              <h3 class="font-headline text-xl font-bold">{item.pilar}</h3>
+              <p class="mt-1 font-body text-vinho/60">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-10">
+          <Button variant="secondary" size="md" href="/metodo">Conheça o Método C.A.D.A.R.N. →</Button>
+        </div>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <Divider />
+
+  <!-- ═══ PROVA — Números de impacto + cases placeholder ═══ -->
+  <SectionWrapper variant="dark" class="!py-16 lg:!py-28" id="prova">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
+      <!-- Métricas lado esquerdo -->
+      <div class="lg:col-span-2">
+        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Resultados reais</p>
+        <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
+          Quem aplica o método,<br />mede o resultado.
+        </h2>
+        <div class="mt-10 space-y-8">
+          <div>
+            <span class="font-headline text-5xl font-bold text-caramelo">+247%</span>
+            <p class="mt-1 font-body text-sm text-offwhite/50">leads qualificados em 90 dias</p>
+          </div>
+          <div>
+            <span class="font-headline text-5xl font-bold text-caramelo">3x</span>
+            <p class="mt-1 font-body text-sm text-offwhite/50">taxa de conversão via funil estruturado</p>
+          </div>
+          <div>
+            <span class="font-headline text-5xl font-bold text-caramelo">-60%</span>
+            <p class="mt-1 font-body text-sm text-offwhite/50">tempo em tarefas operacionais</p>
+          </div>
+        </div>
+      </div>
+      <!-- Cases grid -->
+      <div class="lg:col-span-3 grid grid-cols-2 gap-4">
+        {['Clínica Premium', 'Imobiliária Alto Padrão', 'Escritório de Advocacia', 'Contabilidade Digital'].map((name) => (
+          <div class="group relative aspect-[4/3] overflow-hidden bg-navy/50">
+            <div class="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent">
+              <p class="font-headline text-sm font-bold text-offwhite">{name}</p>
+              <p class="mt-1 text-xs text-caramelo">Case em preparação</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- ═══ BLOG HIGHLIGHTS — Layout magazine ═══ -->
+  <SectionWrapper variant="light" class="!py-16 lg:!py-28" id="blog">
+    <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-3">
+      <!-- Coluna editorial -->
+      <div class="lg:col-span-1">
+        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Blog</p>
+        <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
+          Conteúdo que separa quem sabe de quem <span class="font-accent italic text-caramelo">acha</span> que sabe.
+        </h2>
+        <a href="/blog" class="mt-6 inline-block font-headline text-sm uppercase tracking-widest text-vinho hover:text-caramelo transition-colors duration-200">
+          Ver todos →
+        </a>
+      </div>
+      <!-- Cards -->
+      <div class="lg:col-span-2 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {blogPreviews.map((post, i) => (
+          <Card variant="blog" class={i === 0 ? 'sm:col-span-2' : ''}>
+            <Badge category={post.categoria} />
+            <h3 class="mt-3 font-headline text-lg font-bold text-vinho">{post.titulo}</h3>
+            <p class="mt-2 text-sm text-navy/70">{post.excerpt}</p>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- ═══ CTA FINAL — Split com foto Fabiano trabalhando ═══ -->
+  <SectionWrapper variant="dark" class="!py-16 lg:!py-24">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+      <div>
+        <h2 class="font-headline text-3xl font-bold lg:text-4xl">
+          Pronto para sair<br />do <span class="font-accent italic text-caramelo">achismo?</span>
+        </h2>
+        <p class="mt-4 max-w-md font-body text-lg text-offwhite/60">
+          O Scan de Autoridade analisa seu marketing em 4 pilares e entrega um diagnóstico com score de 0 a 100.
+        </p>
+        <CTABlock variant="hero" class="mt-8 !text-left" />
+      </div>
+      <div>
+        <PhotoPlaceholder label="Foto Fabiano — de costas, 3 telas, trabalhando" aspect="landscape" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- ═══ NEWSLETTER ═══ -->
+  <NewsletterBlock />
+</BaseLayout>

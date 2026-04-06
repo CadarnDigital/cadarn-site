@@ -1,0 +1,19 @@
+---
+/**
+ * Separador caramelo entre seções — ref: regra de uso da paleta Samira.
+ * "Caramelo para separadores de seção, bullets de lista, underline de links hover."
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<hr
+  class:list={[
+    'border-0 border-t border-caramelo/30 mx-auto max-w-content',
+    className,
+  ]}
+  aria-hidden="true"
+/>

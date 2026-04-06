@@ -1,0 +1,43 @@
+---
+interface Props {
+  label: string;
+  aspect?: 'square' | 'portrait' | 'landscape' | 'hero';
+  class?: string;
+}
+
+const { label, aspect = 'portrait', class: className } = Astro.props;
+
+const aspects: Record<string, string> = {
+  square: 'aspect-square',
+  portrait: 'aspect-[3/4]',
+  landscape: 'aspect-[16/9]',
+  hero: 'aspect-[4/3] lg:aspect-[16/9]',
+};
+---
+
+<div
+  class:list={[
+    'relative overflow-hidden bg-navy/10',
+    aspects[aspect],
+    className,
+  ]}
+>
+  {/* Textura sutil */}
+  <div class="absolute inset-0 opacity-[0.04]"
+    style={{
+      backgroundImage: `
+        linear-gradient(rgba(154,122,81,0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(154,122,81,0.5) 1px, transparent 1px)
+      `,
+      backgroundSize: '40px 40px',
+    }}
+  />
+  {/* Bússola decorativa */}
+  <div class="absolute inset-0 flex items-center justify-center">
+    <img src="/logo-splash.png" alt="" class="h-16 w-16 object-contain opacity-[0.08]" aria-hidden="true" />
+  </div>
+  {/* Label */}
+  <div class="absolute inset-0 flex items-end p-4">
+    <span class="font-body text-xs uppercase tracking-wider text-navy/30">{label}</span>
+  </div>
+</div>

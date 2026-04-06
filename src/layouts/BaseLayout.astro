@@ -1,0 +1,86 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { SplashScreenV2 as SplashScreen } from '../components/ui/SplashScreenV2';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = 'Cadarn Martech — Marketing · Gestão · Growth',
+  ogImage = '/og-default.png',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://cadarn.com.br');
+const fullTitle = title === 'Home' ? 'Cadarn Martech — Marketing · Gestão · Growth' : `${title} | Cadarn Martech`;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Cadarn Martech" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JSON-LD Organization (Home only) -->
+    {title === 'Home' && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'Cadarn Martech',
+        url: 'https://cadarn.com.br',
+        logo: 'https://cadarn.com.br/logo-cadarn.svg',
+        description: 'Engenharia de Receita para prestadores de serviço premium. Marketing · Gestão · Growth.',
+        sameAs: [],
+        contactPoint: {
+          '@type': 'ContactPoint',
+          contactType: 'customer service',
+          availableLanguage: 'Portuguese',
+        },
+      })} />
+    )}
+    <!-- Anti-flash: tela navy estática até React montar a splash -->
+    <style is:inline>
+      .splash-cover { position:fixed;inset:0;z-index:9998;background:#0e2a4a; }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <div class="splash-cover" id="splash-cover"></div>
+    <SplashScreen client:load />
+    <Header />
+    <main class="flex-1 pt-16">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

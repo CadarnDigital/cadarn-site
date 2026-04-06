@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionWrapper from '../components/ui/SectionWrapper.astro';
+import { Button } from '../components/ui/Button';
+import CTABlock from '../components/ui/CTABlock.astro';
+import Card from '../components/ui/Card.astro';
+import Badge from '../components/ui/Badge.astro';
+import { FormField } from '../components/ui/FormField';
+import NewsletterBlock from '../components/ui/NewsletterBlock.astro';
+import OversizedText from '../components/ui/OversizedText.astro';
+import Divider from '../components/ui/Divider.astro';
+---
+
+<BaseLayout title="Design System">
+  <!-- Header -->
+  <SectionWrapper variant="dark">
+    <h1 class="font-headline text-3xl font-bold lg:text-5xl">Design System Cadarn</h1>
+    <p class="mt-2 text-offwhite/70">Componentes atômicos · Tokens · Grid</p>
+  </SectionWrapper>
+
+  <!-- Paleta -->
+  <SectionWrapper variant="light">
+    <h2 class="font-headline text-2xl font-bold mb-8">Paleta de Cores</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div>
+        <div class="h-20 rounded-sm bg-vinho"></div>
+        <p class="mt-2 text-sm font-mono">Vinho #5e0f0b</p>
+      </div>
+      <div>
+        <div class="h-20 rounded-sm bg-navy"></div>
+        <p class="mt-2 text-sm font-mono">Navy #0e2a4a</p>
+      </div>
+      <div>
+        <div class="h-20 rounded-sm bg-caramelo"></div>
+        <p class="mt-2 text-sm font-mono">Caramelo #9a7a51</p>
+      </div>
+      <div>
+        <div class="h-20 rounded-sm bg-offwhite border border-border-light"></div>
+        <p class="mt-2 text-sm font-mono">Offwhite #f1e4d3</p>
+      </div>
+    </div>
+    <h3 class="font-headline text-lg font-bold mt-8 mb-4">Status (Scan)</h3>
+    <div class="grid grid-cols-3 gap-4">
+      <div><div class="h-12 rounded-sm bg-status-green"></div><p class="mt-1 text-sm font-mono">Verde</p></div>
+      <div><div class="h-12 rounded-sm bg-status-yellow"></div><p class="mt-1 text-sm font-mono">Amarelo</p></div>
+      <div><div class="h-12 rounded-sm bg-status-red"></div><p class="mt-1 text-sm font-mono">Vermelho</p></div>
+    </div>
+  </SectionWrapper>
+
+  <!-- Tipografia -->
+  <SectionWrapper variant="dark">
+    <h2 class="font-headline text-2xl font-bold mb-8">Tipografia</h2>
+    <div class="space-y-6">
+      <div>
+        <p class="text-xs uppercase tracking-wider text-caramelo mb-2">Headline — Helvetica Now Display / Arial</p>
+        <p class="font-headline text-4xl font-bold">Engenharia de Receita</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-caramelo mb-2">Body — Inter</p>
+        <p class="font-body text-lg">A Cadarn transforma marketing em sistema de gestão mensurável para prestadores de serviço premium.</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-caramelo mb-2">Accent — Canela Italic / Georgia</p>
+        <p class="font-accent text-2xl italic">palavra-joia</p>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- Buttons -->
+  <SectionWrapper variant="light">
+    <h2 class="font-headline text-2xl font-bold mb-8">Buttons</h2>
+    <div class="space-y-6">
+      <div>
+        <p class="text-sm text-vinho/60 mb-3">Primary (Vinho)</p>
+        <div class="flex flex-wrap gap-4">
+          <Button variant="primary" size="lg" href="#">Grande</Button>
+          <Button variant="primary" size="md" href="#">Médio</Button>
+          <Button variant="primary" size="sm" href="#">Pequeno</Button>
+        </div>
+      </div>
+      <div>
+        <p class="text-sm text-vinho/60 mb-3">Secondary (Caramelo)</p>
+        <div class="flex flex-wrap gap-4">
+          <Button variant="secondary" size="lg" href="#">Grande</Button>
+          <Button variant="secondary" size="md" href="#">Médio</Button>
+          <Button variant="secondary" size="sm" href="#">Pequeno</Button>
+        </div>
+      </div>
+      <div>
+        <p class="text-sm text-vinho/60 mb-3">Ghost</p>
+        <div class="flex flex-wrap gap-4">
+          <Button variant="ghost" size="lg" href="#">Grande</Button>
+          <Button variant="ghost" size="md" href="#">Médio</Button>
+          <Button variant="ghost" size="sm" href="#">Pequeno</Button>
+        </div>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- SectionWrapper + Textura -->
+  <SectionWrapper variant="dark">
+    <h2 class="font-headline text-2xl font-bold mb-4">SectionWrapper</h2>
+    <p>Dark variant com textura de papel (grain SVG overlay, 8% opacidade)</p>
+  </SectionWrapper>
+  <SectionWrapper variant="light">
+    <p class="text-vinho/60">Light variant com textura de papel (12% opacidade)</p>
+  </SectionWrapper>
+
+  <!-- CTABlock -->
+  <SectionWrapper variant="dark">
+    <h2 class="font-headline text-2xl font-bold mb-8">CTABlock</h2>
+    <div class="space-y-8">
+      <div>
+        <p class="text-xs uppercase tracking-wider text-caramelo mb-4">Variante Hero</p>
+        <CTABlock variant="hero" />
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-wider text-caramelo mb-4">Variante Inline</p>
+        <CTABlock variant="inline" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- Badges -->
+  <SectionWrapper variant="light">
+    <h2 class="font-headline text-2xl font-bold mb-8">Badges (5 Bandeiras)</h2>
+    <div class="flex flex-wrap gap-3">
+      <Badge category="roi" />
+      <Badge category="amadorismo" />
+      <Badge category="branding" />
+      <Badge category="hibrida" />
+      <Badge category="radical" />
+    </div>
+  </SectionWrapper>
+
+  <!-- Cards -->
+  <SectionWrapper variant="dark">
+    <h2 class="font-headline text-2xl font-bold mb-8">Cards</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <Card variant="blog">
+        <Badge category="roi" />
+        <h3 class="mt-3 font-headline text-lg font-bold">Título do Artigo</h3>
+        <p class="mt-2 text-sm text-navy/70">Excerpt do artigo que aparece na listagem do blog.</p>
+      </Card>
+      <Card variant="case">
+        <h3 class="font-headline text-lg font-bold">Nome do Cliente</h3>
+        <p class="mt-2 text-sm text-navy/70">Segmento · +150% leads em 3 meses</p>
+      </Card>
+      <Card variant="team">
+        <h3 class="font-headline text-lg font-bold">Samira</h3>
+        <p class="text-sm text-navy/70">CRO & Branding Design</p>
+      </Card>
+    </div>
+
+    <h3 class="font-headline text-xl font-bold mt-10 mb-6">Card Portfolio (ref: Like Marketing)</h3>
+    <p class="text-sm text-offwhite/60 mb-4">Fotos P&B · Overlay navy · Hover revela info</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {['Clínica Estética', 'Imobiliária Premium', 'Advocacia Digital'].map((name) => (
+        <Card variant="portfolio">
+          <Fragment slot="image">
+            <div class="w-full h-full bg-gradient-to-br from-navy/30 to-navy/60" />
+          </Fragment>
+          <Fragment slot="logo">
+            <span class="font-headline text-sm font-bold uppercase tracking-widest text-offwhite/80">Logo</span>
+          </Fragment>
+          <h4 class="font-headline text-sm font-bold text-offwhite">{name}</h4>
+          <p class="mt-1 text-xs text-caramelo">Segmento · +200% leads</p>
+          <Fragment slot="mobile-info">
+            <h4 class="font-headline text-sm font-bold text-offwhite">{name}</h4>
+            <p class="text-xs text-caramelo">Segmento · +200% leads</p>
+          </Fragment>
+        </Card>
+      ))}
+    </div>
+  </SectionWrapper>
+
+  <!-- FormField -->
+  <SectionWrapper variant="light">
+    <h2 class="font-headline text-2xl font-bold mb-8">FormField</h2>
+    <div class="max-w-md space-y-4">
+      <FormField client:load label="Nome" name="demo-nome" placeholder="Seu nome completo" required />
+      <FormField client:load label="E-mail" name="demo-email" type="email" placeholder="seu@email.com" />
+      <FormField
+        client:load
+        label="Segmento"
+        name="demo-segmento"
+        type="select"
+        options={[
+          { value: 'imobiliaria', label: 'Imobiliária' },
+          { value: 'estetica', label: 'Estética' },
+          { value: 'advocacia', label: 'Advocacia' },
+          { value: 'contabilidade', label: 'Contabilidade' },
+          { value: 'outro', label: 'Outro' },
+        ]}
+      />
+      <FormField client:load label="Mensagem" name="demo-msg" type="textarea" placeholder="Sua mensagem..." />
+      <FormField client:load label="Com erro" name="demo-erro" error="Este campo é obrigatório" />
+    </div>
+  </SectionWrapper>
+
+  <!-- Divider — separador caramelo -->
+  <Divider />
+
+  <!-- OversizedText — ref: Permaneo -->
+  <SectionWrapper variant="dark">
+    <h2 class="font-headline text-2xl font-bold mb-8">OversizedText (ref: Permaneo)</h2>
+    <div class="flex gap-8 items-start">
+      <OversizedText text="Método" vertical />
+      <div class="space-y-4">
+        <p class="text-sm text-offwhite/60">Tipografia gigante em caramelo para seções editoriais. Vertical ou horizontal.</p>
+        <OversizedText text="Receita" />
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <!-- NewsletterBlock — ref: Camila Renaux -->
+  <NewsletterBlock />
+
+  <!-- Grid -->
+  <SectionWrapper variant="dark">
+    <h2 class="font-headline text-2xl font-bold mb-8">Grid System</h2>
+    <p class="text-xs uppercase tracking-wider text-caramelo mb-4">sm: 1 col · md: 2 cols · lg: 3 cols · xl: 5 cols</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <div class="rounded-sm bg-offwhite/10 p-4 text-center text-sm">{n}</div>
+      ))}
+    </div>
+    <div class="mt-8 space-y-4 text-sm">
+      <div class="flex items-center gap-4">
+        <code class="font-mono text-caramelo">max-w-content</code>
+        <span>1200px (75rem)</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <code class="font-mono text-caramelo">max-w-article</code>
+        <span>720px (45rem)</span>
+      </div>
+    </div>
+  </SectionWrapper>
+</BaseLayout>
