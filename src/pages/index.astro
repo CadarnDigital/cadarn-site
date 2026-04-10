@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionWrapper from '../components/ui/SectionWrapper.astro';
 import { Button } from '../components/ui/Button';
@@ -30,11 +31,10 @@ const triade = [
   { pilar: 'Growth', desc: 'Funil que gera escala mensurável.', cor: 'border-l-caramelo' },
 ];
 
-const blogPreviews = [
-  { titulo: 'Por que seu marketing não gera resultado', categoria: 'roi' as const, excerpt: 'O problema não é falta de investimento — é falta de método.' },
-  { titulo: 'O mito do marketing criativo', categoria: 'amadorismo' as const, excerpt: 'Criatividade sem estratégia é entretenimento.' },
-  { titulo: 'Branding não é logo', categoria: 'branding' as const, excerpt: 'Sua marca é a promessa que você cumpre.' },
-];
+const allPosts = await getCollection('blog');
+const blogHighlights = allPosts
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Home" description="Cadarn Martech — Engenharia de Lucro para prestadores de serviço premium. Marketing, gestão e growth integrados num sistema único.">
@@ -162,22 +162,25 @@ const blogPreviews = [
     <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
       <!-- Métricas lado esquerdo -->
       <div class="lg:col-span-2">
-        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Resultados reais</p>
+        <p class="font-body text-sm uppercase tracking-widest text-caramelo">O problema é real</p>
         <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
-          Quem aplica o método,<br />mede o resultado.
+          O dono faz tudo.<br />O marketing não faz nada.
         </h2>
         <div class="mt-10 space-y-8">
           <div>
-            <span class="font-headline text-5xl font-bold text-caramelo">+247%</span>
-            <p class="mt-1 font-body text-sm text-offwhite/50">leads qualificados em 90 dias</p>
+            <span class="font-headline text-5xl font-bold text-caramelo">98%</span>
+            <p class="mt-1 font-body text-sm text-offwhite/50">dos donos de PME decidem sozinhos em 4+ áreas</p>
+            <p class="mt-0.5 font-body text-[10px] text-offwhite/30">Locomotiva/Itaú 2024</p>
           </div>
           <div>
-            <span class="font-headline text-5xl font-bold text-caramelo">3x</span>
-            <p class="mt-1 font-body text-sm text-offwhite/50">taxa de conversão via funil estruturado</p>
+            <span class="font-headline text-5xl font-bold text-caramelo">74%</span>
+            <p class="mt-1 font-body text-sm text-offwhite/50">do orçamento de marketing vai para curto prazo</p>
+            <p class="mt-0.5 font-body text-[10px] text-offwhite/30">Conversion 2025</p>
           </div>
           <div>
-            <span class="font-headline text-5xl font-bold text-caramelo">-60%</span>
-            <p class="mt-1 font-body text-sm text-offwhite/50">tempo em tarefas operacionais</p>
+            <span class="font-headline text-5xl font-bold text-caramelo">96%</span>
+            <p class="mt-1 font-body text-sm text-offwhite/50">ainda executam tarefas operacionais no dia a dia</p>
+            <p class="mt-0.5 font-body text-[10px] text-offwhite/30">Locomotiva/Itaú 2024</p>
           </div>
         </div>
       </div>
@@ -210,13 +213,22 @@ const blogPreviews = [
       </div>
       <!-- Cards -->
       <div class="lg:col-span-2 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {blogPreviews.map((post, i) => (
-          <Card variant="blog" class={i === 0 ? 'sm:col-span-2' : ''}>
-            <Badge category={post.categoria} />
-            <h3 class="mt-3 font-headline text-lg font-bold text-vinho">{post.titulo}</h3>
-            <p class="mt-2 text-sm text-navy/70">{post.excerpt}</p>
-          </Card>
-        ))}
+        {blogHighlights.length > 0 ? (
+          blogHighlights.map((post, i) => (
+            <a href={`/blog/${post.id}`} class="group block">
+              <Card variant="blog" class={i === 0 ? 'sm:col-span-2' : ''}>
+                <Badge category={post.data.category} />
+                <h3 class="mt-3 font-headline text-lg font-bold text-vinho group-hover:text-caramelo transition-colors duration-200">{post.data.title}</h3>
+                <p class="mt-2 text-sm text-navy/70">{post.data.description}</p>
+              </Card>
+            </a>
+          ))
+        ) : (
+          <div class="sm:col-span-2 py-8 text-center">
+            <p class="font-body text-vinho/60">Artigos em preparação.</p>
+            <Button variant="secondary" size="md" href="/scan" class="mt-4">Faça seu Scan de Autoridade</Button>
+          </div>
+        )}
       </div>
     </div>
   </SectionWrapper>
