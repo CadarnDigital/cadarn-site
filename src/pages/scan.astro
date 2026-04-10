@@ -1,6 +1,7 @@
 ---
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import ScanForm from '../components/scan/ScanForm';
 import ScanChat from '../components/scan/ScanChat';
 import '../styles/global.css';
 
@@ -151,7 +152,12 @@ export const prerender = false;
 
     <Footer />
 
-    <!-- Chat (lazy-loaded, hidden until started) -->
+    <!-- Form (progressive disclosure, hidden until CTA clicked) -->
+    <div id="scan-form-container" class="hidden">
+      <ScanForm client:only="react" onSubmit={() => {}} />
+    </div>
+
+    <!-- Chat (lazy-loaded, hidden until form submitted) -->
     <div id="scan-chat-container" class="hidden">
       <ScanChat client:only="react" />
     </div>
@@ -160,19 +166,30 @@ export const prerender = false;
       document.addEventListener('DOMContentLoaded', () => {
         const btn = document.getElementById('btn-iniciar-scan');
         const landing = document.getElementById('scan-landing');
+        const formContainer = document.getElementById('scan-form-container');
         const chatContainer = document.getElementById('scan-chat-container');
         const header = document.querySelector('header');
         const footer = document.querySelector('footer');
 
+        // Step 1: Landing CTA → Show form
         btn?.addEventListener('click', () => {
           landing?.classList.add('hidden');
           header?.classList.add('hidden');
           footer?.classList.add('hidden');
+          formContainer?.classList.remove('hidden');
+        });
+
+        // Step 2: Form submit → Show chat with lead context
+        window.addEventListener('scan-form-submit', ((e: CustomEvent) => {
+          const data = e.detail;
+          formContainer?.classList.add('hidden');
           chatContainer?.classList.remove('hidden');
 
-          // Trigger React component start
-          window.dispatchEvent(new CustomEvent('scan-start'));
-        });
+          // Pass lead name to ScanChat via custom event
+          window.dispatchEvent(
+            new CustomEvent('scan-start', { detail: { leadName: data.name } })
+          );
+        }) as EventListener);
       });
     </script>
   </body>

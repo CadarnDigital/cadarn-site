@@ -7,9 +7,11 @@ interface Message {
 
 interface ScanChatProps {
   onClose?: () => void;
+  leadName?: string;
 }
 
-export const ScanChat = ({ onClose }: ScanChatProps) => {
+export const ScanChat = ({ onClose, leadName: initialLeadName }: ScanChatProps) => {
+  const [leadName, setLeadName] = useState(initialLeadName || '');
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
@@ -33,11 +35,13 @@ export const ScanChat = ({ onClose }: ScanChatProps) => {
 
   // Listen for scan-start event from Astro page
   useEffect(() => {
-    const handler = () => {
+    const handler = ((e: CustomEvent) => {
       if (!started) {
-        handleStart();
+        const name = e.detail?.leadName || '';
+        if (name) setLeadName(name);
+        handleStart(name);
       }
-    };
+    }) as EventListener;
     window.addEventListener('scan-start', handler);
     return () => window.removeEventListener('scan-start', handler);
   }, [started]);
@@ -110,10 +114,14 @@ export const ScanChat = ({ onClose }: ScanChatProps) => {
     }
   };
 
-  const handleStart = () => {
+  const handleStart = (name?: string) => {
     setStarted(true);
     const initialMessage: Message[] = [];
-    sendMessage('Olá, quero fazer meu Scan de Autoridade Cadarn.', initialMessage);
+    const resolvedName = name || leadName;
+    const greeting = resolvedName
+      ? `Olá, sou ${resolvedName} e quero fazer meu Scan de Autoridade Cadarn.`
+      : 'Olá, quero fazer meu Scan de Autoridade Cadarn.';
+    sendMessage(greeting, initialMessage);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
