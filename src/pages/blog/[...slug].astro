@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import SectionWrapper from '../../components/ui/SectionWrapper.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Divider from '../../components/ui/Divider.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const allPosts = await getCollection('blog');
+const related = allPosts
+  .filter((p) => p.data.category === post.data.category && p.id !== post.id)
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 3);
+---
+
+<ArticleLayout
+  title={post.data.title}
+  description={post.data.description}
+  category={post.data.category}
+  author={post.data.author}
+  publishedAt={post.data.publishedAt}
+  ogImage={post.data.ogImage}
+>
+  <Content />
+
+  {related.length > 0 && (
+    <Fragment slot="related">
+      <Divider />
+      <SectionWrapper variant="light">
+        <div class="py-6 lg:py-10">
+          <h2 class="font-headline text-2xl font-bold mb-8 text-center">
+            Artigos relacionados
+          </h2>
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {related.map((relPost) => (
+              <a
+                href={`/blog/${relPost.id}`}
+                class="group block rounded-none bg-offwhite shadow-card transition-all duration-200 hover:shadow-card-hover"
+              >
+                <div class="aspect-[16/9] bg-navy/10" />
+                <div class="p-5">
+                  <Badge category={relPost.data.category} class="mb-3" />
+                  <h3 class="font-headline text-lg font-bold text-vinho group-hover:text-caramelo transition-colors duration-200 mb-2">
+                    {relPost.data.title}
+                  </h3>
+                  <p class="font-body text-sm text-vinho/70 line-clamp-2">
+                    {relPost.data.description}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </SectionWrapper>
+    </Fragment>
+  )}
+</ArticleLayout>

@@ -1,0 +1,170 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SectionWrapper from '../components/ui/SectionWrapper.astro';
+import CTABlock from '../components/ui/CTABlock.astro';
+import PhotoPlaceholder from '../components/ui/PhotoPlaceholder.astro';
+import Divider from '../components/ui/Divider.astro';
+
+interface MetricItem {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  title: string;
+  client: string;
+  segment: string;
+  description: string;
+  metrics?: MetricItem[];
+  heroImage?: string;
+  publishedAt: Date;
+}
+
+const {
+  title,
+  client,
+  segment,
+  description,
+  metrics,
+  heroImage,
+  publishedAt,
+} = Astro.props;
+
+const segmentLabels: Record<string, string> = {
+  imobiliaria: 'Imobiliária',
+  estetica: 'Estética',
+  advocacia: 'Advocacia',
+  arquitetura: 'Arquitetura',
+  contabilidade: 'Contabilidade',
+  outro: 'Outro',
+};
+
+const formattedDate = publishedAt.toLocaleDateString('pt-BR', {
+  year: 'numeric',
+  month: 'long',
+});
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://cadarn.com.br');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  author: {
+    '@type': 'Organization',
+    name: 'Cadarn Martech',
+    url: 'https://cadarn.com.br',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Cadarn Martech',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://cadarn.com.br/logo-cadarn.svg',
+    },
+  },
+  datePublished: publishedAt.toISOString(),
+  url: canonicalURL.href,
+  image: heroImage ?? 'https://cadarn.com.br/og-default.png',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalURL.href,
+  },
+  about: {
+    '@type': 'Thing',
+    name: `Case de ${segmentLabels[segment] ?? segment}`,
+  },
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  {/* Hero */}
+  <SectionWrapper variant="dark" class="!py-16 lg:!py-24">
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3">
+        <span class="inline-block rounded-none bg-caramelo/20 px-3 py-1 font-body text-xs uppercase tracking-widest text-caramelo">
+          {segmentLabels[segment] ?? segment}
+        </span>
+        <span class="font-body text-xs text-offwhite/40">{formattedDate}</span>
+      </div>
+      <p class="mt-4 font-headline text-lg font-semibold text-caramelo lg:text-xl">
+        {client}
+      </p>
+      <h1 class="mt-2 font-headline text-3xl font-bold leading-tight lg:text-5xl">
+        {title}
+      </h1>
+      <p class="mt-6 max-w-xl font-body text-lg text-offwhite/60">
+        {description}
+      </p>
+    </div>
+  </SectionWrapper>
+
+  {/* Metrics bar */}
+  {metrics && metrics.length > 0 && (
+    <div class="bg-navy py-8 lg:py-10">
+      <div class="mx-auto flex max-w-content flex-col items-center justify-center gap-8 px-4 sm:flex-row sm:gap-16 lg:gap-24">
+        {metrics.map((metric) => (
+          <div class="text-center">
+            <span class="font-headline text-5xl font-bold text-caramelo lg:text-6xl">
+              {metric.value}
+            </span>
+            <p class="mt-1 font-body text-xs uppercase tracking-widest text-offwhite/50">
+              {metric.label}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {/* Hero image */}
+  {heroImage ? (
+    <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="-mt-8 relative z-10">
+        <img
+          src={heroImage}
+          alt={`Case ${client}`}
+          class="w-full aspect-[16/9] object-cover rounded-none shadow-hero"
+        />
+      </div>
+    </div>
+  ) : (
+    <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="-mt-8 relative z-10">
+        <PhotoPlaceholder label={`Foto do case — ${client}`} aspect="hero" class="shadow-hero" />
+      </div>
+    </div>
+  )}
+
+  {/* Content: Problema, Solucao, Resultado */}
+  <SectionWrapper variant="light" class="!py-16 lg:!py-28">
+    <div class="mx-auto max-w-article">
+      <article class="prose-cadarn">
+        <slot />
+      </article>
+    </div>
+  </SectionWrapper>
+
+  <Divider />
+
+  {/* Related cases (injected by page) */}
+  <slot name="related" />
+
+  {/* CTA final */}
+  <SectionWrapper variant="dark" class="!py-16 lg:!py-24">
+    <div class="text-center">
+      <h2 class="font-headline text-3xl font-bold lg:text-4xl">
+        Quer resultados assim no <span class="font-accent italic text-caramelo">seu</span> negócio?
+      </h2>
+      <p class="mt-4 mx-auto max-w-lg font-body text-lg text-offwhite/60">
+        O primeiro passo é um diagnóstico completo do seu marketing. Grátis, sem compromisso.
+      </p>
+      <CTABlock variant="hero" class="mt-8" />
+    </div>
+  </SectionWrapper>
+</BaseLayout>

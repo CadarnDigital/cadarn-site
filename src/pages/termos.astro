@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionWrapper from '../components/ui/SectionWrapper.astro';
+import Divider from '../components/ui/Divider.astro';
+
+const lastUpdated = '10 de abril de 2026';
+---
+
+<BaseLayout
+  title="Termos de Uso"
+  description="Termos de Uso do site da Cadarn Martech. Condições de utilização do site e do Scan de Autoridade."
+>
+  <SectionWrapper variant="dark">
+    <div class="py-6 lg:py-10">
+      <p class="font-body text-xs uppercase tracking-[0.3em] text-caramelo">Legal</p>
+      <h1 class="mt-4 font-headline text-3xl font-bold lg:text-4xl xl:text-5xl">
+        Termos de Uso
+      </h1>
+      <p class="mt-4 font-body text-sm text-offwhite/50">
+        Última atualização: {lastUpdated}
+      </p>
+    </div>
+  </SectionWrapper>
+
+  <Divider />
+
+  <SectionWrapper variant="light">
+    <article class="mx-auto max-w-article py-8 lg:py-14 prose-cadarn">
+
+      <h2>1. Aceitação dos termos</h2>
+      <p>
+        Ao acessar e utilizar o site da <strong>Cadarn Martech</strong> ("Site"), você concorda
+        com estes Termos de Uso. Se não concordar, por favor não utilize o Site.
+      </p>
+
+      <h2>2. Sobre o Site</h2>
+      <p>
+        O Site é uma plataforma institucional da Cadarn Martech, consultoria de Marketing, Gestão
+        e Growth para prestadores de serviço premium. O Site oferece:
+      </p>
+      <ul>
+        <li>Conteúdo institucional sobre a empresa e seu método</li>
+        <li>Blog com artigos sobre marketing, gestão e growth</li>
+        <li>Portfolio de cases e resultados</li>
+        <li>Scan de Autoridade Cadarn — ferramenta gratuita de diagnóstico digital</li>
+      </ul>
+
+      <h2>3. Scan de Autoridade</h2>
+
+      <h3>3.1 Natureza do serviço</h3>
+      <p>
+        O Scan de Autoridade é uma ferramenta gratuita que utiliza inteligência artificial para
+        analisar o posicionamento digital do usuário com base nas informações fornecidas. O
+        resultado é um <strong>diagnóstico indicativo</strong>, não uma auditoria profissional completa.
+      </p>
+
+      <h3>3.2 Limitações</h3>
+      <ul>
+        <li>O Score de Autoridade é baseado exclusivamente nas informações declaradas pelo usuário.</li>
+        <li>O diagnóstico não constitui garantia de resultados futuros.</li>
+        <li>O uso é limitado a 3 (três) scans por dia por endereço IP.</li>
+      </ul>
+
+      <h3>3.3 Consentimento</h3>
+      <p>
+        Ao iniciar o Scan, você consente com a coleta e processamento dos dados informados,
+        conforme descrito na nossa <a href="/privacidade">Política de Privacidade</a>.
+      </p>
+
+      <h2>4. Propriedade intelectual</h2>
+      <p>
+        Todo o conteúdo do Site — incluindo textos, imagens, logotipos, design, método C.A.D.A.R.N.,
+        Hexágono Moral, Console S.I.C. e demais materiais — é de propriedade exclusiva da
+        Cadarn Martech ou de seus licenciadores, protegido pelas leis brasileiras de propriedade
+        intelectual.
+      </p>
+      <p>É proibido:</p>
+      <ul>
+        <li>Reproduzir, distribuir ou modificar o conteúdo sem autorização prévia por escrito.</li>
+        <li>Utilizar a marca Cadarn, seus símbolos ou método para fins comerciais sem licença.</li>
+        <li>Fazer engenharia reversa do Scan de Autoridade ou de qualquer ferramenta do Site.</li>
+      </ul>
+
+      <h2>5. Conduta do usuário</h2>
+      <p>Ao utilizar o Site, você se compromete a:</p>
+      <ul>
+        <li>Fornecer informações verdadeiras no Scan de Autoridade.</li>
+        <li>Não utilizar o Site para fins ilegais ou não autorizados.</li>
+        <li>Não tentar acessar áreas restritas do Site ou de seus sistemas.</li>
+        <li>Não utilizar bots, scrapers ou ferramentas automatizadas para acessar o Site.</li>
+      </ul>
+
+      <h2>6. Isenção de responsabilidade</h2>
+      <p>
+        O conteúdo do Site, incluindo artigos do blog e resultados do Scan, é fornecido
+        "como está" e tem caráter exclusivamente informativo. A Cadarn Martech não se
+        responsabiliza por:
+      </p>
+      <ul>
+        <li>Decisões tomadas com base exclusiva no conteúdo do Site ou no resultado do Scan.</li>
+        <li>Indisponibilidade temporária do Site ou do Scan.</li>
+        <li>Imprecisões no diagnóstico gerado pela inteligência artificial.</li>
+      </ul>
+
+      <h2>7. Links externos</h2>
+      <p>
+        O Site pode conter links para sites de terceiros. A Cadarn Martech não se responsabiliza
+        pelo conteúdo, políticas de privacidade ou práticas desses sites.
+      </p>
+
+      <h2>8. Modificações</h2>
+      <p>
+        Reservamo-nos o direito de alterar estes Termos a qualquer momento. Alterações
+        significativas serão comunicadas no Site. O uso continuado após as alterações
+        constitui aceitação dos novos termos.
+      </p>
+
+      <h2>9. Lei aplicável</h2>
+      <p>
+        Estes Termos são regidos pelas leis da República Federativa do Brasil. Fica eleito
+        o foro da Comarca de Vitória/ES para dirimir quaisquer controvérsias.
+      </p>
+
+      <h2>10. Contato</h2>
+      <p>
+        Para dúvidas sobre estes Termos de Uso:
+      </p>
+      <ul>
+        <li><strong>E-mail:</strong> <a href="mailto:contato@cadarn.com.br">contato@cadarn.com.br</a></li>
+        <li><strong>Responsável:</strong> Cadarn Martech — Vitória/ES, Brasil</li>
+      </ul>
+
+    </article>
+  </SectionWrapper>
+</BaseLayout>

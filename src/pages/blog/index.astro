@@ -1,17 +1,64 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionWrapper from '../../components/ui/SectionWrapper.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
+import Divider from '../../components/ui/Divider.astro';
+import { BlogFilter } from '../../components/blog/BlogFilter';
+
+const allPosts = await getCollection('blog');
+
+const sortedPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime());
+
+const categories = [
+  { id: 'roi', label: 'ROI Real', colorClass: 'bg-bandeira-roi' },
+  { id: 'amadorismo', label: 'Fim do Amadorismo', colorClass: 'bg-bandeira-amador' },
+  { id: 'branding', label: 'Branding como Escudo', colorClass: 'bg-navy' },
+  { id: 'hibrida', label: 'Inteligência Híbrida', colorClass: 'bg-bandeira-hibrida' },
+  { id: 'radical', label: 'Protagonismo Radical', colorClass: 'bg-bandeira-radical' },
+];
+
+const serializedPosts = sortedPosts.map((post) => ({
+  title: post.data.title,
+  description: post.data.description,
+  category: post.data.category,
+  author: post.data.author,
+  publishedAt: post.data.publishedAt.toISOString(),
+  slug: post.id,
+}));
 ---
 
-<BaseLayout title="Blog" description="Artigos sobre Marketing, Gestão e Growth para prestadores de serviço premium">
+<BaseLayout
+  title="Blog"
+  description="Artigos sobre Marketing, Gestão e Growth para prestadores de serviço premium que exigem resultado, não promessas."
+>
   <SectionWrapper variant="dark">
-    <h1 class="font-headline text-4xl font-bold lg:text-5xl">Blog</h1>
-  </SectionWrapper>
-  <SectionWrapper variant="light">
-    <div class="py-12 text-center">
-      <p class="text-lg text-vinho/70">Estamos preparando conteúdo de verdade. Enquanto isso:</p>
-      <CTABlock variant="inline" text="Faça seu Scan de Autoridade" class="mt-4" />
+    <div class="py-6 lg:py-10 text-center">
+      <h1 class="font-headline text-4xl font-bold lg:text-5xl mb-4">
+        Conteúdo que gera resultado
+      </h1>
+      <p class="mx-auto max-w-2xl font-body text-lg text-offwhite/80">
+        Artigos diretos sobre Marketing, Gestão e Growth. Sem enrolação, sem promessa vazia — só o que funciona para prestadores de serviço premium.
+      </p>
     </div>
+  </SectionWrapper>
+
+  <Divider />
+
+  <SectionWrapper variant="light">
+    <div class="py-6">
+      <BlogFilter
+        client:load
+        categories={categories}
+        posts={serializedPosts}
+      />
+    </div>
+  </SectionWrapper>
+
+  <Divider />
+
+  <SectionWrapper variant="dark">
+    <CTABlock variant="hero" text="Faça seu Scan de Autoridade" />
   </SectionWrapper>
 </BaseLayout>

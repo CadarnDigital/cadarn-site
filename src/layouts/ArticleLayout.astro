@@ -1,0 +1,105 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SectionWrapper from '../components/ui/SectionWrapper.astro';
+import Badge from '../components/ui/Badge.astro';
+import Divider from '../components/ui/Divider.astro';
+import CTABlock from '../components/ui/CTABlock.astro';
+
+type BandeiraKey = 'roi' | 'amadorismo' | 'branding' | 'hibrida' | 'radical';
+
+interface Props {
+  title: string;
+  description: string;
+  category: BandeiraKey;
+  author: string;
+  publishedAt: Date;
+  ogImage?: string;
+}
+
+const { title, description, category, author, publishedAt, ogImage } = Astro.props;
+
+const formattedDate = publishedAt.toLocaleDateString('pt-BR', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+});
+
+const isoDate = publishedAt.toISOString();
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://cadarn.com.br');
+const articleOgImage = ogImage ?? '/og-default.png';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  author: {
+    '@type': 'Person',
+    name: author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Cadarn Martech',
+    url: 'https://cadarn.com.br',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://cadarn.com.br/logo-cadarn.svg',
+    },
+  },
+  datePublished: isoDate,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalURL.href,
+  },
+  image: new URL(articleOgImage, 'https://cadarn.com.br').href,
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={articleOgImage}>
+  <Fragment slot="head">
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content={isoDate} />
+    <meta property="article:author" content={author} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- Hero -->
+  <SectionWrapper variant="dark">
+    <div class="py-6 lg:py-10">
+      <div class="mx-auto max-w-article">
+        <Badge category={category} class="mb-4" />
+        <h1 class="font-headline text-3xl font-bold lg:text-4xl xl:text-5xl mb-4">
+          {title}
+        </h1>
+        <p class="font-body text-offwhite/70 text-lg mb-6">
+          {description}
+        </p>
+        <div class="flex items-center gap-4 text-sm text-offwhite/60 font-body">
+          <span>{author}</span>
+          <span aria-hidden="true" class="text-caramelo">·</span>
+          <time datetime={isoDate}>{formattedDate}</time>
+        </div>
+      </div>
+    </div>
+  </SectionWrapper>
+
+  <Divider />
+
+  <!-- Article body -->
+  <SectionWrapper variant="light">
+    <article class="mx-auto max-w-article py-6 lg:py-10 prose-cadarn">
+      <slot />
+    </article>
+  </SectionWrapper>
+
+  <Divider />
+
+  <!-- Related articles slot -->
+  <slot name="related" />
+
+  <!-- CTA -->
+  <SectionWrapper variant="dark">
+    <CTABlock variant="hero" text="Faça seu Scan de Autoridade" />
+  </SectionWrapper>
+</BaseLayout>

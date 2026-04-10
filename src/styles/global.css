@@ -11,6 +11,60 @@
   }
 }
 
+@layer components {
+  .prose-cadarn {
+    @apply font-body text-base leading-relaxed text-vinho;
+  }
+  .prose-cadarn h2 {
+    @apply font-headline text-2xl font-bold mt-10 mb-4 text-navy;
+  }
+  .prose-cadarn h3 {
+    @apply font-headline text-xl font-bold mt-8 mb-3 text-navy;
+  }
+  .prose-cadarn p {
+    @apply mb-5;
+  }
+  .prose-cadarn a {
+    @apply text-caramelo underline underline-offset-2 hover:text-caramelo/80 transition-colors;
+  }
+  .prose-cadarn strong {
+    @apply font-semibold text-navy;
+  }
+  .prose-cadarn em {
+    @apply font-accent;
+  }
+  .prose-cadarn ul {
+    @apply mb-5 ml-6 list-disc;
+  }
+  .prose-cadarn ol {
+    @apply mb-5 ml-6 list-decimal;
+  }
+  .prose-cadarn li {
+    @apply mb-2;
+  }
+  .prose-cadarn li::marker {
+    @apply text-caramelo;
+  }
+  .prose-cadarn blockquote {
+    @apply border-l-2 border-caramelo pl-4 italic text-vinho/80 my-6;
+  }
+  .prose-cadarn code {
+    @apply font-mono text-sm bg-navy/5 px-1.5 py-0.5 rounded;
+  }
+  .prose-cadarn pre {
+    @apply bg-navy text-offwhite p-4 rounded-none overflow-x-auto mb-5;
+  }
+  .prose-cadarn pre code {
+    @apply bg-transparent p-0 rounded-none;
+  }
+  .prose-cadarn hr {
+    @apply border-0 border-t border-caramelo/30 my-8;
+  }
+  .prose-cadarn img {
+    @apply my-6 w-full;
+  }
+}
+
 @layer utilities {
   .texture-paper {
     position: relative;

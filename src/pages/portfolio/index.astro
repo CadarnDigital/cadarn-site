@@ -1,17 +1,142 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionWrapper from '../../components/ui/SectionWrapper.astro';
 import CTABlock from '../../components/ui/CTABlock.astro';
+import PhotoPlaceholder from '../../components/ui/PhotoPlaceholder.astro';
+import { Button } from '../../components/ui/Button';
+
+const cases = (await getCollection('portfolio'))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+const segmentLabels: Record<string, string> = {
+  imobiliaria: 'Imobiliária',
+  estetica: 'Estética',
+  advocacia: 'Advocacia',
+  arquitetura: 'Arquitetura',
+  contabilidade: 'Contabilidade',
+  outro: 'Outro',
+};
 ---
 
-<BaseLayout title="Portfolio" description="Cases e resultados reais da Cadarn Martech">
-  <SectionWrapper variant="dark">
-    <h1 class="font-headline text-4xl font-bold lg:text-5xl">Portfolio</h1>
+<BaseLayout
+  title="Portfolio"
+  description="Cases e resultados reais da Cadarn Martech. Veja como prestadores de serviço premium transformaram seu marketing em lucratividade mensurável."
+>
+  {/* Hero */}
+  <SectionWrapper variant="dark" class="!py-16 lg:!py-24">
+    <div class="max-w-3xl">
+      <p class="font-body text-xs uppercase tracking-[0.3em] text-caramelo">Portfolio</p>
+      <h1 class="mt-4 font-headline text-4xl font-bold leading-tight lg:text-5xl xl:text-6xl">
+        Resultados reais,<br /><span class="font-accent italic text-caramelo">mensuráveis.</span>
+      </h1>
+      <p class="mt-6 max-w-xl font-body text-lg text-offwhite/60">
+        Cada case é um prestador de serviço premium que saiu do achismo e passou a medir cada real investido em marketing.
+      </p>
+    </div>
   </SectionWrapper>
-  <SectionWrapper variant="light">
-    <div class="py-12 text-center">
-      <p class="text-lg text-vinho/70">Cases em preparação. Quer ser o próximo?</p>
-      <CTABlock variant="inline" text="Faça seu Scan de Autoridade" class="mt-4" />
+
+  {/* Cases grid or empty state */}
+  <SectionWrapper variant="light" class="!py-16 lg:!py-28">
+    {cases.length > 0 ? (
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {cases.map((caseItem) => {
+          const firstMetric = caseItem.data.metrics?.[0];
+          return (
+            <a
+              href={`/portfolio/${caseItem.id}`}
+              class="group relative aspect-square overflow-hidden rounded-none block"
+            >
+              {/* Photo P&B */}
+              <div class="absolute inset-0 grayscale transition-all duration-500 group-hover:grayscale-0">
+                {caseItem.data.heroImage ? (
+                  <img
+                    src={caseItem.data.heroImage}
+                    alt={caseItem.data.client}
+                    class="h-full w-full object-cover"
+                  />
+                ) : (
+                  <PhotoPlaceholder label={caseItem.data.client} aspect="square" class="h-full w-full" />
+                )}
+              </div>
+
+              {/* Navy overlay */}
+              <div class="absolute inset-0 bg-navy/70 transition-all duration-300 group-hover:bg-navy/90" />
+
+              {/* Desktop: hover reveals info */}
+              <div class="hidden md:flex absolute inset-0 flex-col items-center justify-center p-6 text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span class="font-body text-xs uppercase tracking-widest text-caramelo">
+                  {segmentLabels[caseItem.data.segment]}
+                </span>
+                <h3 class="mt-2 font-headline text-lg font-bold text-offwhite">
+                  {caseItem.data.client}
+                </h3>
+                {firstMetric && (
+                  <span class="mt-3 font-headline text-3xl font-bold text-caramelo">
+                    {firstMetric.value}
+                  </span>
+                )}
+                {firstMetric && (
+                  <span class="mt-1 font-body text-xs text-offwhite/50">
+                    {firstMetric.label}
+                  </span>
+                )}
+              </div>
+
+              {/* Desktop: client name always visible at center */}
+              <div class="hidden md:flex absolute inset-0 flex-col items-center justify-center p-6 text-center transition-opacity duration-300 group-hover:opacity-0">
+                <h3 class="font-headline text-lg font-bold text-offwhite">
+                  {caseItem.data.client}
+                </h3>
+              </div>
+
+              {/* Mobile: info always visible below */}
+              <div class="md:hidden absolute bottom-0 left-0 right-0 bg-navy/90 p-4">
+                <span class="font-body text-xs uppercase tracking-widest text-caramelo">
+                  {segmentLabels[caseItem.data.segment]}
+                </span>
+                <h3 class="mt-1 font-headline text-base font-bold text-offwhite">
+                  {caseItem.data.client}
+                </h3>
+                {firstMetric && (
+                  <div class="mt-2 flex items-baseline gap-2">
+                    <span class="font-headline text-xl font-bold text-caramelo">{firstMetric.value}</span>
+                    <span class="font-body text-xs text-offwhite/50">{firstMetric.label}</span>
+                  </div>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="py-12 text-center">
+        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Em breve</p>
+        <h2 class="mt-4 font-headline text-2xl font-bold lg:text-3xl">
+          Estamos preparando nossos cases.
+        </h2>
+        <p class="mt-3 max-w-md mx-auto text-lg text-vinho/60">
+          Enquanto isso, descubra o que o Scan de Autoridade revela sobre o seu marketing.
+        </p>
+        <div class="mt-8">
+          <Button variant="secondary" size="lg" href="/scan">
+            Faça seu Scan de Autoridade
+          </Button>
+        </div>
+      </div>
+    )}
+  </SectionWrapper>
+
+  {/* CTA final */}
+  <SectionWrapper variant="dark" class="!py-16 lg:!py-24">
+    <div class="text-center">
+      <h2 class="font-headline text-3xl font-bold lg:text-4xl">
+        Quer ser o próximo <span class="font-accent italic text-caramelo">case?</span>
+      </h2>
+      <p class="mt-4 mx-auto max-w-lg font-body text-lg text-offwhite/60">
+        O primeiro passo é um diagnóstico completo. Grátis, sem compromisso, em 5 minutos.
+      </p>
+      <CTABlock variant="hero" class="mt-8" />
     </div>
   </SectionWrapper>
 </BaseLayout>

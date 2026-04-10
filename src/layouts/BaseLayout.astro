@@ -60,8 +60,15 @@ const fullTitle = title === 'Home' ? 'Cadarn Martech — Marketing · Gestão ·
         name: 'Cadarn Martech',
         url: 'https://cadarn.com.br',
         logo: 'https://cadarn.com.br/logo-cadarn.svg',
-        description: 'Engenharia de Receita para prestadores de serviço premium. Marketing · Gestão · Growth.',
-        sameAs: [],
+        description: 'Engenharia de Lucro para prestadores de serviço premium. Marketing · Gestão · Growth.',
+        foundingDate: '2020',
+        sameAs: [
+          'https://www.instagram.com/cadarnmartech/',
+        ],
+        areaServed: {
+          '@type': 'Country',
+          name: 'Brazil',
+        },
         contactPoint: {
           '@type': 'ContactPoint',
           contactType: 'customer service',
@@ -69,6 +76,20 @@ const fullTitle = title === 'Home' ? 'Cadarn Martech — Marketing · Gestão ·
         },
       })} />
     )}
+
+    <!-- JSON-LD WebSite (Home only) -->
+    {title === 'Home' && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'Cadarn Martech',
+        url: 'https://cadarn.com.br',
+        description: 'Marketing · Gestão · Growth para prestadores de serviço premium',
+        inLanguage: 'pt-BR',
+      })} />
+    )}
+    <slot name="head" />
+
     <!-- Anti-flash: tela navy estática até React montar a splash -->
     <style is:inline>
       .splash-cover { position:fixed;inset:0;z-index:9998;background:#0e2a4a; }
