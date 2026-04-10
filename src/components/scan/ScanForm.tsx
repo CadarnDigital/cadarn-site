@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export interface ScanFormData {
   name: string;
@@ -52,6 +52,14 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
   const [visible, setVisible] = useState(true);
   const [errors, setErrors] = useState<FieldError>({});
   const [lgpdAccepted, setLgpdAccepted] = useState(false);
+
+  const segmentRef = useRef<HTMLSelectElement>(null);
+
+  useEffect(() => {
+    if (screen === 2 && !transitioning) {
+      segmentRef.current?.focus();
+    }
+  }, [screen, transitioning]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -190,6 +198,8 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
 
       {/* Form container */}
       <div
+        role="form"
+        aria-label="Formulário do Scan de Autoridade"
         className={`w-full max-w-md transition-opacity duration-250 ${visible && !transitioning ? 'opacity-100' : 'opacity-0'}`}
       >
         {/* Honeypot — invisible to users, visible to bots */}
@@ -221,7 +231,8 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
                 type="text"
                 placeholder="Seu nome completo"
                 required
-                aria-required
+                aria-required="true"
+                aria-label="Nome completo"
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? 'name-error' : undefined}
                 value={formData.name}
@@ -248,7 +259,8 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
                 type="text"
                 placeholder="@seuperfil"
                 required
-                aria-required
+                aria-required="true"
+                aria-label="@ do Instagram"
                 aria-invalid={!!errors.instagram}
                 aria-describedby={errors.instagram ? 'instagram-error' : undefined}
                 value={formData.instagram}
@@ -285,9 +297,11 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
               </label>
               <div className="relative">
                 <select
+                  ref={segmentRef}
                   id="segment"
                   required
-                  aria-required
+                  aria-required="true"
+                  aria-label="Segmento de atuação"
                   aria-invalid={!!errors.segment}
                   aria-describedby={errors.segment ? 'segment-error' : undefined}
                   value={formData.segment}
@@ -335,7 +349,8 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
                 type="tel"
                 placeholder="(00) 00000-0000"
                 required
-                aria-required
+                aria-required="true"
+                aria-label="WhatsApp"
                 aria-invalid={!!errors.whatsapp}
                 aria-describedby={errors.whatsapp ? 'whatsapp-error' : undefined}
                 value={formData.whatsapp}
@@ -361,7 +376,8 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
                 <select
                   id="isDecisionMaker"
                   required
-                  aria-required
+                  aria-required="true"
+                  aria-label="Você é o decisor?"
                   aria-invalid={!!errors.isDecisionMaker}
                   aria-describedby={errors.isDecisionMaker ? 'decision-error' : undefined}
                   value={formData.isDecisionMaker}
@@ -409,6 +425,7 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
                         setErrors((prev) => ({ ...prev, lgpd: undefined }));
                       }
                     }}
+                    aria-describedby={errors.lgpd ? 'lgpd-error' : undefined}
                     className="peer sr-only"
                   />
                   <div className="h-4 w-4 border border-offwhite/30 bg-offwhite/5 transition-colors peer-checked:border-caramelo peer-checked:bg-caramelo/20 peer-focus-visible:ring-1 peer-focus-visible:ring-caramelo/50" />
@@ -433,7 +450,7 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
                 </span>
               </label>
               {errors.lgpd && (
-                <p role="alert" className="text-xs text-status-red">
+                <p id="lgpd-error" role="alert" className="text-xs text-status-red">
                   {errors.lgpd}
                 </p>
               )}

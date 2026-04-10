@@ -22,7 +22,7 @@ export const SplashScreenV2 = () => {
 
     timerRef.current = setTimeout(() => {
       setPhase('reveal');
-    }, 3600);
+    }, 1300);
 
     return () => clearTimeout(timerRef.current);
   }, [visible]);
@@ -34,7 +34,7 @@ export const SplashScreenV2 = () => {
       setVisible(false);
       sessionStorage.setItem(SPLASH_KEY, '1');
       document.documentElement.classList.remove('splash-active');
-    }, 1400);
+    }, 700);
 
     return () => clearTimeout(timer);
   }, [phase]);
@@ -54,7 +54,7 @@ export const SplashScreenV2 = () => {
           }
           transition={
             phase === 'reveal'
-              ? { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
+              ? { duration: 0.6, ease: [0.76, 0, 0.24, 1] }
               : {}
           }
         >
@@ -75,7 +75,7 @@ export const SplashScreenV2 = () => {
               className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-caramelo/60 to-transparent"
               initial={{ top: '-2%' }}
               animate={{ top: '102%' }}
-              transition={{ duration: 2.4, ease: 'linear', repeat: 1 }}
+              transition={{ duration: 1.0, ease: 'linear' }}
             />
 
             {/* Conteúdo central */}
@@ -84,7 +84,7 @@ export const SplashScreenV2 = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.7, filter: 'blur(8px)' }}
                 animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
                 <img
                   src="/logo-splash.png"
@@ -97,7 +97,7 @@ export const SplashScreenV2 = () => {
               <motion.h1
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.3, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 className="-mt-2 text-xl uppercase tracking-[0.35em] text-caramelo sm:text-2xl lg:text-3xl"
                 style={{ fontFamily: 'Georgia, "Canela", "Times New Roman", serif', fontWeight: 500 }}
               >
@@ -108,7 +108,7 @@ export const SplashScreenV2 = () => {
               <motion.div
                 initial={{ scaleX: 0, opacity: 0 }}
                 animate={{ scaleX: 1, opacity: 1 }}
-                transition={{ duration: 0.4, delay: 2.1, ease: 'easeOut' }}
+                transition={{ duration: 0.2, delay: 0.7, ease: 'easeOut' }}
                 className="mt-3 h-px w-40 origin-center sm:w-56 lg:w-72"
                 style={{
                   background: 'linear-gradient(90deg, transparent, #9a7a51, transparent)',
@@ -123,7 +123,7 @@ export const SplashScreenV2 = () => {
                     key={word}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 2.6 + i * 0.15, duration: 0.25 }}
+                    transition={{ delay: 0.85 + i * 0.08, duration: 0.15 }}
                     className="font-body text-base uppercase tracking-[0.2em] text-caramelo/70 sm:text-lg lg:text-xl"
                   >
                     {i > 0 && <span className="mr-2 text-caramelo/30">·</span>}
@@ -135,10 +135,10 @@ export const SplashScreenV2 = () => {
 
             {/* Partículas nos cantos */}
             {[
-              { pos: 'top-6 left-6', delay: 0.5 },
-              { pos: 'top-6 right-6', delay: 0.7 },
-              { pos: 'bottom-6 left-6', delay: 0.9 },
-              { pos: 'bottom-6 right-6', delay: 1.1 },
+              { pos: 'top-6 left-6', delay: 0.15 },
+              { pos: 'top-6 right-6', delay: 0.25 },
+              { pos: 'bottom-6 left-6', delay: 0.35 },
+              { pos: 'bottom-6 right-6', delay: 0.45 },
             ].map(({ pos, delay }) => (
               <motion.div
                 key={pos}
