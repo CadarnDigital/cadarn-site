@@ -179,11 +179,18 @@ export const prerender = false;
           formContainer?.classList.remove('hidden');
         });
 
-        // Step 2: Form submit → Show chat with lead context
+        // Step 2: Form submit → Save lead + Show chat
         window.addEventListener('scan-form-submit', ((e: CustomEvent) => {
           const data = e.detail;
           formContainer?.classList.add('hidden');
           chatContainer?.classList.remove('hidden');
+
+          // Save lead (fire-and-forget — don't block the chat UX)
+          fetch('/api/scan/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          }).catch(() => { /* silently ignore errors */ });
 
           // Pass lead name to ScanChat via custom event
           window.dispatchEvent(

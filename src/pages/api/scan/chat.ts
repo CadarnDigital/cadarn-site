@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import Anthropic from '@anthropic-ai/sdk';
 import { SCAN_SYSTEM_PROMPT } from '../../../lib/scan-system-prompt';
+import { supabaseAdmin } from '../../../lib/supabase';
 
 export const prerender = false;
 
@@ -9,13 +10,6 @@ interface ChatMessage {
   content: string;
 }
 
-// --- Rate limiting (in-memory, MVP) ---
-interface RateLimitEntry {
-  count: number;
-  date: string; // YYYY-MM-DD
-}
-
-const rateLimitMap = new Map<string, RateLimitEntry>();
 const MAX_REQUESTS_PER_DAY = 3;
 
 const getClientIp = (request: Request): string => {
@@ -26,24 +20,28 @@ const getClientIp = (request: Request): string => {
   );
 };
 
-const getTodayKey = (): string => {
-  return new Date().toISOString().slice(0, 10);
-};
+const isRateLimited = async (ip: string): Promise<boolean> => {
+  const today = new Date().toISOString().slice(0, 10);
 
-const isRateLimited = (ip: string): boolean => {
-  const today = getTodayKey();
-  const entry = rateLimitMap.get(ip);
+  const { data, error } = await supabaseAdmin
+    .from('scan_rate_limits')
+    .upsert({ ip, date: today, count: 1 }, { onConflict: 'ip,date', ignoreDuplicates: false })
+    .select('count')
+    .single();
 
-  if (!entry || entry.date !== today) {
-    rateLimitMap.set(ip, { count: 1, date: today });
-    return false;
+  if (error || !data) return false;
+
+  if (data.count > MAX_REQUESTS_PER_DAY) return true;
+
+  // Increment on subsequent calls
+  if (data.count > 1) {
+    await supabaseAdmin
+      .from('scan_rate_limits')
+      .update({ count: data.count + 1 })
+      .eq('ip', ip)
+      .eq('date', today);
   }
 
-  if (entry.count >= MAX_REQUESTS_PER_DAY) {
-    return true;
-  }
-
-  entry.count += 1;
   return false;
 };
 
@@ -93,7 +91,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Rate limiting check
   const clientIp = getClientIp(request);
-  if (isRateLimited(clientIp)) {
+  if (await isRateLimited(clientIp)) {
     return new Response(
       JSON.stringify({ error: 'Limite de scans diários atingido. Tente novamente amanhã.' }),
       { status: 429, headers: { 'Content-Type': 'application/json' } }
