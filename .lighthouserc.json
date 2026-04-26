@@ -1,0 +1,19 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./dist",
+      "url": ["/", "/metodo", "/blog", "/scan"]
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.85 }],
+        "categories:accessibility": ["error", { "minScore": 0.90 }],
+        "categories:best-practices": ["warn", { "minScore": 0.90 }],
+        "categories:seo": ["error", { "minScore": 0.90 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
