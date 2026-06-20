@@ -6,6 +6,7 @@ export interface ScanFormData {
   segment: string;
   whatsapp: string;
   isDecisionMaker: 'sim' | 'influencio' | 'nao';
+  consentGiven: boolean;
 }
 
 interface ScanFormProps {
@@ -157,6 +158,7 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
       segment: formData.segment,
       whatsapp: formData.whatsapp.trim(),
       isDecisionMaker: formData.isDecisionMaker as ScanFormData['isDecisionMaker'],
+      consentGiven: lgpdAccepted,
       honeypot: formData.honeypot,
     };
 
@@ -168,6 +170,7 @@ export const ScanForm = ({ onSubmit }: ScanFormProps) => {
       segment: detail.segment,
       whatsapp: detail.whatsapp,
       isDecisionMaker: detail.isDecisionMaker,
+      consentGiven: detail.consentGiven,
     });
   };
 
