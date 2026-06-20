@@ -10,8 +10,6 @@ export default {
         caramelo: '#9a7a51',
         offwhite: '#f1e4d3',
 
-        'section-dark': '#0e2a4a',
-        'section-light': '#f1e4d3',
         'bg-cover': '#081520',
         'border-light': '#d9cfc3',
 

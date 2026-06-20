@@ -2,6 +2,8 @@ import type { APIRoute } from 'astro';
 import Anthropic from '@anthropic-ai/sdk';
 import { SCAN_SYSTEM_PROMPT } from '../../../lib/scan-system-prompt';
 import { supabaseAdmin } from '../../../lib/supabase';
+import { getClientIp } from '../../../lib/ip-utils';
+import { isRateLimited } from '../../../lib/rate-limit';
 
 export const prerender = false;
 
@@ -11,39 +13,8 @@ interface ChatMessage {
 }
 
 const MAX_REQUESTS_PER_DAY = 3;
-
-const getClientIp = (request: Request): string => {
-  return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown'
-  );
-};
-
-const isRateLimited = async (ip: string): Promise<boolean> => {
-  const today = new Date().toISOString().slice(0, 10);
-
-  const { data, error } = await supabaseAdmin
-    .from('scan_rate_limits')
-    .upsert({ ip, date: today, count: 1 }, { onConflict: 'ip,date', ignoreDuplicates: false })
-    .select('count')
-    .single();
-
-  if (error || !data) return false;
-
-  if (data.count > MAX_REQUESTS_PER_DAY) return true;
-
-  // Increment on subsequent calls
-  if (data.count > 1) {
-    await supabaseAdmin
-      .from('scan_rate_limits')
-      .update({ count: data.count + 1 })
-      .eq('ip', ip)
-      .eq('date', today);
-  }
-
-  return false;
-};
+const MAX_MESSAGES = 20;
+const MAX_MESSAGE_LENGTH = 4000;
 
 // --- Honeypot generic response ---
 const HONEYPOT_RESPONSE = 'Obrigado pelo interesse! Em breve entraremos em contato.';
@@ -89,9 +60,9 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // Rate limiting check
+  // Rate limiting check — hashed IP via shared utility
   const clientIp = getClientIp(request);
-  if (await isRateLimited(clientIp)) {
+  if (await isRateLimited(clientIp, 'scan_rate_limits', MAX_REQUESTS_PER_DAY)) {
     return new Response(
       JSON.stringify({ error: 'Limite de scans diários atingido. Tente novamente amanhã.' }),
       { status: 429, headers: { 'Content-Type': 'application/json' } }
@@ -103,6 +74,21 @@ export const POST: APIRoute = async ({ request }) => {
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
     return new Response(
       JSON.stringify({ error: 'Messages obrigatório' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  if (messages.length > MAX_MESSAGES) {
+    return new Response(
+      JSON.stringify({ error: 'Número de mensagens excede o limite permitido' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const oversized = messages.some((m) => m.content.length > MAX_MESSAGE_LENGTH);
+  if (oversized) {
+    return new Response(
+      JSON.stringify({ error: 'Mensagem excede o tamanho máximo permitido' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
   }

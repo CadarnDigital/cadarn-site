@@ -1,26 +1,12 @@
 import type { APIRoute } from 'astro';
-import { createHmac } from 'crypto';
 import { supabaseAdmin } from '../../../lib/supabase';
+import { getClientIp, pseudonymizeIp } from '../../../lib/ip-utils';
+import { isRateLimited } from '../../../lib/rate-limit';
 
 export const prerender = false;
 
 const POLICY_VERSION = 'v1.0';
-
-// Pseudonymize IP with HMAC-SHA256 + server-side pepper.
-// Pepper rotação: ao trocar IP_HASH_PEPPER, hashes antigos deixam de ser
-// reproduzíveis — planejado e aceitável (fins de auditoria, não de rastreio).
-const pseudonymizeIp = (ip: string): string => {
-  const pepper = import.meta.env.IP_HASH_PEPPER;
-  if (!pepper) throw new Error('IP_HASH_PEPPER não configurado');
-  return createHmac('sha256', pepper).update(ip).digest('hex');
-};
-
-// Use o último hop do XFF (inserido pelo edge Vercel — não spoofável pelo cliente).
-const getClientIp = (request: Request): string => {
-  const xff = request.headers.get('x-forwarded-for') ?? '';
-  const parts = xff.split(',').map((s) => s.trim()).filter(Boolean);
-  return parts.length ? parts[parts.length - 1] : (request.headers.get('x-real-ip') ?? 'unknown');
-};
+const MAX_LEADS_PER_DAY = 5;
 
 export const POST: APIRoute = async ({ request }) => {
   let body: {
@@ -50,6 +36,15 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
+  const clientIp = getClientIp(request);
+
+  if (await isRateLimited(clientIp, 'scan_rate_limits', MAX_LEADS_PER_DAY)) {
+    return new Response(
+      JSON.stringify({ error: 'Limite diário de envios atingido. Tente novamente amanhã.' }),
+      { status: 429, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
   // Guard de base legal LGPD — consentimento é obrigatório para inserção
   if (body.consentGiven !== true) {
     return new Response(
@@ -57,8 +52,6 @@ export const POST: APIRoute = async ({ request }) => {
       { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
   }
-
-  const clientIp = getClientIp(request);
 
   const { error } = await supabaseAdmin.from('scan_leads').insert({
     name: body.name,
