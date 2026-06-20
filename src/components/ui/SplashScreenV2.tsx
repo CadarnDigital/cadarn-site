@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { colors, rgba } from '../../lib/design-tokens';
 
 const SPLASH_KEY = 'cadarn_splash_shown';
 
@@ -63,8 +64,8 @@ export const SplashScreenV2 = () => {
             <div className="absolute inset-0 opacity-[0.06]"
               style={{
                 backgroundImage: `
-                  linear-gradient(rgba(154,122,81,0.4) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(154,122,81,0.4) 1px, transparent 1px)
+                  linear-gradient(${rgba.caramelo(0.4)} 1px, transparent 1px),
+                  linear-gradient(90deg, ${rgba.caramelo(0.4)} 1px, transparent 1px)
                 `,
                 backgroundSize: '60px 60px',
               }}
@@ -111,8 +112,8 @@ export const SplashScreenV2 = () => {
                 transition={{ duration: 0.2, delay: 0.7, ease: 'easeOut' }}
                 className="mt-3 h-px w-40 origin-center sm:w-56 lg:w-72"
                 style={{
-                  background: 'linear-gradient(90deg, transparent, #9a7a51, transparent)',
-                  boxShadow: '0 0 12px rgba(154,122,81,0.4)',
+                  background: `linear-gradient(90deg, transparent, ${colors.caramelo}, transparent)`,
+                  boxShadow: `0 0 12px ${rgba.caramelo(0.4)}`,
                 }}
               />
 

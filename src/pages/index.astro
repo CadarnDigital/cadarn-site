@@ -40,6 +40,7 @@ const blogHighlights = allPosts
 <BaseLayout title="Home" description="Cadarn Martech — Engenharia de Lucro para prestadores de serviço premium. Marketing, gestão e growth integrados num sistema único.">
 
   <!-- ═══ HERO — Split assimétrico: texto 60% + foto tríade 40% ═══ -->
+  <div id="hero">
   <SectionWrapper variant="dark" class="!py-0">
     <div class="grid min-h-[85vh] grid-cols-1 items-center gap-8 py-12 lg:grid-cols-5 lg:gap-16 lg:py-0">
       <!-- Texto -->
@@ -72,6 +73,7 @@ const blogHighlights = allPosts
       <img src="/logo-splash.png" alt="" class="h-[600px] w-[600px]" aria-hidden="true" />
     </div>
   </SectionWrapper>
+  </div>
 
   <!-- ═══ NÚMEROS — Faixa de impacto visual ═══ -->
   <div class="bg-navy py-8 lg:py-10">
@@ -254,5 +256,24 @@ const blogHighlights = allPosts
   <!-- ═══ NEWSLETTER ═══ -->
   <NewsletterBlock />
 
-  <CTABlock variant="sticky" />
+  <div id="sticky-cta" class="hidden" aria-hidden="true">
+    <CTABlock variant="sticky" />
+  </div>
+
+  <script>
+    const hero = document.getElementById('hero');
+    const stickyCta = document.getElementById('sticky-cta');
+
+    if (hero && stickyCta) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          const visible = !entry.isIntersecting;
+          stickyCta.classList.toggle('hidden', !visible);
+          stickyCta.setAttribute('aria-hidden', String(!visible));
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(hero);
+    }
+  </script>
 </BaseLayout>

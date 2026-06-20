@@ -287,8 +287,11 @@ export const ScanChat = ({ onClose, leadName: initialLeadName }: ScanChatProps) 
         className="flex-1 overflow-y-auto px-4 py-8 sm:px-6"
         role="log"
         aria-live="polite"
+        aria-relevant="additions text"
+        aria-atomic="false"
         aria-busy={isStreaming}
         aria-label="Mensagens da conversa"
+        tabIndex={0}
       >
         <div className="mx-auto max-w-2xl space-y-8">
           {messages.map((msg, i) => (

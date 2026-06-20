@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-navy:     #0e2a4a;
+    --color-vinho:    #5e0f0b;
+    --color-caramelo: #9a7a51;
+    --color-offwhite: #f1e4d3;
+    --rgb-caramelo: 154, 122, 81;
+    --rgb-navy:     14, 42, 74;
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -132,10 +141,10 @@
 
   /* Tech: glow caramelo */
   .glow-caramelo {
-    box-shadow: 0 0 20px rgba(154, 122, 81, 0.3);
+    box-shadow: 0 0 20px rgba(var(--rgb-caramelo), 0.3);
   }
   .glow-caramelo-lg {
-    box-shadow: 0 0 40px rgba(154, 122, 81, 0.25), 0 0 80px rgba(154, 122, 81, 0.1);
+    box-shadow: 0 0 40px rgba(var(--rgb-caramelo), 0.25), 0 0 80px rgba(var(--rgb-caramelo), 0.1);
   }
 
   /* Tech: glassmorphism */
@@ -186,11 +195,11 @@
   .gradient-mesh {
     background: linear-gradient(
       -45deg,
-      #0e2a4a 0%,
-      #5e0f0b 25%,
-      #0e2a4a 50%,
-      #9a7a51 75%,
-      #0e2a4a 100%
+      var(--color-navy)     0%,
+      var(--color-vinho)    25%,
+      var(--color-navy)     50%,
+      var(--color-caramelo) 75%,
+      var(--color-navy)     100%
     );
     background-size: 400% 400%;
     animation: meshMove 8s ease infinite;
@@ -204,8 +213,8 @@
   /* Tech: grid de circuito */
   .tech-grid {
     background-image:
-      linear-gradient(rgba(154, 122, 81, 0.4) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(154, 122, 81, 0.4) 1px, transparent 1px);
+      linear-gradient(rgba(var(--rgb-caramelo), 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--rgb-caramelo), 0.4) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
