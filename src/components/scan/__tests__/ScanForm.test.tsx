@@ -1,6 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { ScanForm, type ScanFormData } from '../ScanForm';
+
+expect.extend(toHaveNoViolations);
 
 const fillScreen1 = async (
   user: ReturnType<typeof userEvent.setup>,
@@ -136,6 +139,32 @@ describe('ScanForm', () => {
       await user.click(screen.getByRole('button', { name: /voltar/i }));
       await waitFor(() => screen.getByText(/etapa 1 de 2/i));
       expect(screen.queryByText(/selecione seu segmento/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Accessibility (axe)', () => {
+    it('has no axe violations on screen 1', async () => {
+      const { container } = render(<ScanForm onSubmit={vi.fn()} />);
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it('has no axe violations on screen 2', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ScanForm onSubmit={vi.fn()} />);
+      await fillScreen1(user);
+      await user.click(screen.getByRole('button', { name: /continuar/i }));
+      await waitFor(() => screen.getByText(/etapa 2 de 2/i));
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it('has no axe violations when validation errors are shown', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ScanForm onSubmit={vi.fn()} />);
+      await user.click(screen.getByRole('button', { name: /continuar/i }));
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
     });
   });
 

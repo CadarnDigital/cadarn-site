@@ -1,6 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { BlogFilter } from '../BlogFilter';
+
+expect.extend(toHaveNoViolations);
 
 const categories = [
   { id: 'roi', label: 'ROI Real', colorClass: 'bg-bandeira-roi' },
@@ -72,5 +75,22 @@ describe('BlogFilter', () => {
     render(<BlogFilter categories={categories} posts={makePosts(1)} />);
     const todosBtn = screen.getByRole('button', { name: /todos/i });
     expect(todosBtn.className).toContain('bg-vinho');
+  });
+
+  describe('Accessibility (axe)', () => {
+    it('has no axe violations with posts', async () => {
+      const posts = [...makePosts(3, 'roi'), ...makePosts(2, 'branding')];
+      const { container } = render(<BlogFilter categories={categories} posts={posts} />);
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it('has no axe violations on empty state', async () => {
+      const user = userEvent.setup();
+      const { container } = render(<BlogFilter categories={categories} posts={makePosts(2, 'roi')} />);
+      await user.click(screen.getByRole('button', { name: /branding/i }));
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
   });
 });

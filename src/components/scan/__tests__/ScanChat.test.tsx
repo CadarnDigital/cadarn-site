@@ -1,5 +1,8 @@
 import { act, render, screen } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { ScanChat } from '../ScanChat';
+
+expect.extend(toHaveNoViolations);
 
 const mockDoneReader = () => ({
   ok: true,
@@ -61,5 +64,15 @@ describe('ScanChat', () => {
     render(<ScanChat leadName="Teste" />);
     await dispatchScanStart('Teste');
     expect(await screen.findByText(/ocorreu um erro/i)).toBeInTheDocument();
+  });
+
+  describe('Accessibility (axe)', () => {
+    it('has no axe violations when chat UI is active', async () => {
+      const { container } = render(<ScanChat leadName="Ana" />);
+      await dispatchScanStart('Ana');
+      await screen.findByText(/scan de autoridade cadarn/i, { selector: 'span' });
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
   });
 });

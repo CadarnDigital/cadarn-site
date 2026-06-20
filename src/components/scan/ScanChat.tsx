@@ -264,7 +264,7 @@ export const ScanChat = ({ onClose, leadName: initialLeadName }: ScanChatProps) 
       role="region"
     >
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-offwhite/10 px-4 py-3 sm:px-6">
+      <div className="flex items-center justify-between border-b border-offwhite/10 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-3">
           <div className="h-px w-6 bg-caramelo" aria-hidden="true" />
           <span className="font-mono text-xs uppercase tracking-widest text-offwhite/50">
@@ -280,7 +280,7 @@ export const ScanChat = ({ onClose, leadName: initialLeadName }: ScanChatProps) 
             Fechar
           </button>
         )}
-      </header>
+      </div>
 
       {/* Messages */}
       <div
