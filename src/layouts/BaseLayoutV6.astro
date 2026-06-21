@@ -1,0 +1,61 @@
+---
+/**
+ * BaseLayoutV6 — layout da versao 6: cópia da v5 "premium tech cinematografica"
+ * (VINHO-dominante, com o IntroRitual de abertura) ELEVANDO o movimento de
+ * navegação ao nível do Instituto Futuros (scroll suave + ambiente perpétuo +
+ * reação atrelada ao gesto). Mantém o ritual de abertura da v5 intacto.
+ *  - tokens-v6.css (cópia de tokens-v5.css; vinho + aditivos de movimento v6)
+ *  - componentes próprios de src/components/v6/* (isolados; não afetam v2..v5)
+ *  - SmoothScrollProvider da v6 (Lenis calibrado easeOutCubic ~1.1s)
+ *  - HeaderV6 (cópia em components/v6) com scroll-spy + item ativo TACHADO
+ *  - classe .v-eval no <body> para forçar movimento mesmo com reduced-motion
+ * Reusa Footer da v1 (read-only). noindex enquanto for pagina de validacao.
+ */
+import Footer from '../components/layout/Footer.astro';
+import { HeaderV6 } from '../components/v6/HeaderV6';
+import { SmoothScrollProvider } from '../components/v6/SmoothScrollProvider';
+import '../styles/global.css';
+import '../styles/v-shared.css';
+import '../styles/tokens-v6.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Cadarn Martech — Engenharia de Lucro. Marketing · Gestão · Growth.',
+} = Astro.props;
+
+const fullTitle = `${title} | Cadarn Martech`;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{fullTitle}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <slot name="head" />
+  </head>
+  <body class="v-eval flex min-h-screen flex-col bg-surface-abyss text-on-dark-body antialiased">
+    <SmoothScrollProvider client:load />
+    <HeaderV6 client:load />
+    <main class="flex-1 pt-16">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

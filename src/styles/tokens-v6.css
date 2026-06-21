@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════════════════════
+   tokens-v6.css — CORES da v6 "premium tech cinematográfica" do site Cadarn.
+   Cópia de tokens-v5.css (= v4, VINHO-dominante) + tokens ADITIVOS da v6 para
+   a ELEVAÇÃO do movimento de navegação (hero Ken Burns + duotone, ticker
+   scroll-reactive, watermark com drift, ambiente perpétuo). Importado SÓ por
+   BaseLayoutV6 — editar aqui não afeta v2/v3/v4/v5.
+
+   Paleta Cadarn: VINHO dominante (#5e0f0b), navy apoio, caramelo #9a7a51
+   acento, offwhite #f1e4d3. NUNCA preto puro, azul elétrico, magenta ou
+   cor fora da paleta. Os tokens herdam a identidade da v5 e adicionam
+   variáveis próprias da v6.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Superfícies dark DOMINANTES — derivadas do vinho oficial #5e0f0b ── */
+  --surface-base: #3d0a07;   /* vinho profundo — superfície dark dominante */
+  --surface-abyss: #2a0a08;  /* vinho mais escuro ainda — abismo/respiro */
+  --surface-raised: #4d130d; /* vinho elevado — cards sobre dark */
+  --surface-vinho: #3d0a07;  /* alias do dominante (seções de citação) */
+
+  /* ── Superfícies de APOIO (navy — operacional/controle, 1-2 seções) ── */
+  --surface-navy: #0e2a4a;
+  --surface-navy-deep: #081520;
+  --surface-navy-raised: #143356;
+
+  /* ── Texto sobre dark (comum às duas versões) ── */
+  --on-dark-strong: #f1e4d3;
+  --on-dark-body: rgba(241, 228, 211, 0.82);
+  --on-dark-muted: rgba(241, 228, 211, 0.60);
+
+  /* ── Acento metálico (caramelo — comum; só filete/acento, nunca bloco) ── */
+  --accent-metal: #9a7a51;
+  --accent-metal-hi: #b89766;
+  --accent-metal-glow: rgba(154, 122, 81, 0.35);
+
+  /* ── Cortina do ritual de abertura — vinho oficial ── */
+  --curtain-color: #5e0f0b;
+
+  /* ── Shadows dark (comuns) ── */
+  --shadow-dark-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-dark-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-dark-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 40px var(--accent-metal-glow);
+
+  /* ── Gradientes ── */
+  --gradient-hero: radial-gradient(120% 120% at 50% 0%, var(--surface-base) 0%, var(--surface-abyss) 70%);
+  --gradient-vinho: radial-gradient(120% 120% at 50% 0%, var(--surface-base) 0%, var(--surface-abyss) 82%);
+  --gradient-navy: radial-gradient(120% 120% at 50% 0%, var(--surface-navy) 0%, var(--surface-navy-deep) 80%);
+
+  /* ═══════════════════ ADITIVOS v4 — novos elementos de movimento ═══════════════════ */
+
+  /* ── Ritual de abertura (Passo 3): trilho + barra de progresso ── */
+  --curtain-track: rgba(241, 228, 211, 0.12);  /* trilho escuro da barra */
+  --curtain-progress: var(--accent-metal);      /* preenchimento caramelo */
+
+  /* ── HeroSlider (Passo 4.1): duotone na cor da marca para placeholders ── */
+  /* Estados de fundo do hero — todos dentro da paleta (vinho/navy de apoio). */
+  --hero-state-1: radial-gradient(130% 130% at 30% 20%, #4d130d 0%, var(--surface-abyss) 75%);
+  --hero-state-2: radial-gradient(130% 130% at 70% 30%, #3d0a07 0%, #1f0707 80%);
+  --hero-state-3: radial-gradient(130% 130% at 50% 10%, var(--surface-navy) 0%, var(--surface-abyss) 78%);
+  /* Duotone de FOTO (placeholder) na cor da marca — vinho sombra, caramelo luz. */
+  --duotone-shadow: #2a0a08;
+  --duotone-light: #9a7a51;
+
+  /* ── Watermark tipográfica (Passo 4.4) ── */
+  --watermark-color: rgba(154, 122, 81, 0.05);  /* caramelo translúcido */
+
+  /* ── Labels verticais de seção (Passo 4.5) ── */
+  --vlabel-color: var(--accent-metal);
+
+  /* ── Virada de paleta no CTA final (Passo 4.7): o "destino" ── */
+  /* Vinho intenso saturado — cor forte da marca, ponto alto do ritmo cromático. */
+  --cta-finale-bg: radial-gradient(120% 140% at 50% 0%, #6e120c 0%, #4a0d09 70%);
+  --cta-finale-accent: var(--accent-metal-hi);
+
+  /* ═══════════════════ ADITIVOS v6 — ELEVAÇÃO do movimento ═══════════════════ */
+
+  /* ── Hero (item 2): camadas duotone vinho/caramelo dos placeholders ──
+     Cada estado é uma FOTO-placeholder em duotone na cor da marca. Quando houver
+     fotos reais, trocar o gradiente base por url(...) mantendo as overlays. */
+  --v6-hero-photo-1: linear-gradient(135deg, #4d130d 0%, #2a0a08 60%, #1f0707 100%);
+  --v6-hero-photo-2: linear-gradient(120deg, #5e0f0b 0%, #3d0a07 55%, #1f0707 100%);
+  --v6-hero-photo-3: linear-gradient(150deg, #4a0d09 0%, #2a0a08 50%, #160505 100%);
+  --v6-duotone-shadow: #2a0a08;   /* sombras do duotone -> vinho profundo */
+  --v6-duotone-light: #9a7a51;    /* luzes do duotone -> caramelo */
+
+  /* ── Movimento ambiente perpétuo (item 3) ── */
+  --v6-grain-breathe-from: 0.05;
+  --v6-grain-breathe-to: 0.085;
+
+  /* ── Ticker scroll-reactive (item 4): duração base do loop ── */
+  --v6-ticker-base: 32s;
+}

@@ -277,3 +277,112 @@
 .v-tighter {
   letter-spacing: -0.035em;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADITIVO v6 — ELEVAÇÃO do movimento de navegação (Instituto Futuros).
+   Classes prefixadas .v6-* — NÃO usadas por v2/v3/v4/v5, zero impacto neles.
+   Cor sempre da paleta Cadarn (vinho/caramelo/offwhite).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── item 1 — texto que ilumina PALAVRA A PALAVRA (efeito-assinatura) ──
+   Estado base: palavra apagada (caramelo translúcido, baixa opacidade).
+   Acende para offwhite pleno conforme sobe pela viewport (scroll-linked).
+   Caminho CSS via animation-timeline: view(); fallback Framer no componente.
+   ─────────────────────────────────────────────────────────────────── */
+.v6-illuminate-word {
+  opacity: 0.15;
+  color: #9a7a5155; /* caramelo apagado */
+  transition: opacity 0.3s linear, color 0.3s linear;
+}
+.v6-illuminate-word--hl {
+  /* destaque acende em caramelo alto em vez de offwhite */
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .v6-illuminate--css .v6-illuminate-word {
+      opacity: 0.15;
+      color: #9a7a5155;
+      animation: v6-word-acende linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 42%;
+      will-change: opacity, color;
+    }
+    .v6-illuminate--css .v6-illuminate-word--hl {
+      animation-name: v6-word-acende-hl;
+    }
+  }
+}
+
+@keyframes v6-word-acende {
+  from { opacity: 0.15; color: #9a7a5155; }
+  to { opacity: 1; color: #f1e4d3; }
+}
+@keyframes v6-word-acende-hl {
+  from { opacity: 0.15; color: #9a7a5155; }
+  to { opacity: 1; color: #b89766; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v6-illuminate-word {
+    opacity: 1 !important;
+    color: #f1e4d3 !important;
+    animation: none !important;
+  }
+  .v6-illuminate-word--hl {
+    color: #b89766 !important;
+  }
+}
+
+/* ── item 2 — DUOTONE vinho/caramelo das fotos do hero ───────────────
+   Técnica "sanduíche": foto/gradiente base + camada multiply (vinho, sombras)
+   + camada lighten (caramelo, luzes). Aqui sobre placeholders; pronto para
+   fotos reais (basta trocar o background do slide por url() em grayscale).
+   Só aplica blend onde houver suporte (fallback: placeholder cru).
+   ─────────────────────────────────────────────────────────────────── */
+.v6-duotone {
+  isolation: isolate;
+}
+@supports (mix-blend-mode: multiply) {
+  .v6-duotone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: var(--v6-duotone-shadow);
+    mix-blend-mode: multiply;
+  }
+  .v6-duotone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: var(--v6-duotone-light);
+    mix-blend-mode: lighten;
+    opacity: 0.5;
+  }
+}
+
+/* ── item 3 — movimento ambiente perpétuo: grão que respira ──────────
+   opacity oscila muito devagar (~16s) em torno do valor base. Só roda no
+   modo avaliação (.v-eval) OU quando o usuário aceita movimento.
+   ─────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .v6-grain-breathe {
+    animation: v6-grain-breathe 16s ease-in-out infinite;
+  }
+}
+.v-eval .v6-grain-breathe {
+  animation: v6-grain-breathe 16s ease-in-out infinite !important;
+}
+@keyframes v6-grain-breathe {
+  0%, 100% { opacity: var(--v6-grain-breathe-from); }
+  50% { opacity: var(--v6-grain-breathe-to); }
+}
+
+/* ── item 5 — watermark v6: herda .v-watermark, parallax vem do JS ──── */
+.v6-watermark {
+  font-weight: 700;
+}
