@@ -29,10 +29,14 @@ const BRAND_HOLD_MS = 720;
  */
 export const CurtainIntro = () => {
   const prefersReduced = useReducedMotion();
+  // Em modo avaliação, ignoramos a preferência do SO para garantir que Fabiano
+  // veja a abertura mesmo com "reduzir movimento" ligado no Windows.
+  // Em produção, respeitamos a acessibilidade (skipMotion = prefersReduced).
+  const skipMotion = prefersReduced && !EVALUATION_MODE;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (prefersReduced) return;
+    if (skipMotion) return;
     if (EVALUATION_MODE) {
       setVisible(true);
       return;
@@ -40,7 +44,7 @@ export const CurtainIntro = () => {
     // Produção: só na primeira visita da sessão.
     // const alreadyShown = sessionStorage.getItem('cadarn_v2_intro');
     // if (!alreadyShown) setVisible(true);
-  }, [prefersReduced]);
+  }, [skipMotion]);
 
   const dismiss = (): void => {
     // Produção: gravar flag de sessão.
@@ -48,7 +52,7 @@ export const CurtainIntro = () => {
     setVisible(false);
   };
 
-  if (prefersReduced) return null;
+  if (skipMotion) return null;
 
   return (
     <AnimatePresence>

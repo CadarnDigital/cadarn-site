@@ -175,3 +175,105 @@
     transition: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADITIVO v4 — utilitárias dos novos elementos de movimento.
+   Todas color-agnostic (cor vem dos tokens da página). Não usadas por v2/v3.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── .text-illuminate — texto que ilumina ao rolar (Passo 4.2) ───────
+   Cada palavra começa esmaecida (opacity baixa) e ilumina conforme sobe
+   pela viewport via animation-timeline: view(). O componente React
+   (IlluminateText) provê fallback com Framer useScroll quando a API CSS
+   não existe. Só opacity anima. Reduced-motion: tudo visível.
+   ─────────────────────────────────────────────────────────────────── */
+.text-illuminate-word {
+  opacity: 0.2;
+  transition: opacity 0.3s linear;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .text-illuminate--css .text-illuminate-word {
+      opacity: 0.2;
+      animation: word-illuminate linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+      will-change: opacity;
+    }
+  }
+}
+
+@keyframes word-illuminate {
+  from { opacity: 0.2; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-illuminate-word {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
+/* ── .v-ticker — faixa marquee em loop infinito (Passo 4.3) ───────────
+   Dois grupos idênticos lado a lado deslizam translateX -50% em loop.
+   Só transform anima. Reduced-motion: estático (sem rolagem).
+   ─────────────────────────────────────────────────────────────────── */
+.v-ticker {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.v-ticker__track {
+  display: inline-flex;
+  will-change: transform;
+  animation: ticker-scroll 28s linear infinite;
+}
+.v-ticker__track:hover {
+  animation-play-state: paused;
+}
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v-ticker__track {
+    animation: none;
+  }
+}
+/* Forçar movimento mesmo com reduced-motion no modo avaliação da v4. */
+.v-eval .v-ticker__track {
+  animation: ticker-scroll 28s linear infinite !important;
+}
+
+/* ── .v-label — label vertical de seção (Passo 4.5) ──────────────────
+   writing-mode vertical, uppercase pequeno, caramelo. Puro CSS, sem JS.
+   ─────────────────────────────────────────────────────────────────── */
+.v-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* ── .v-watermark — tipografia gigante de fundo (Passo 4.4) ──────────
+   z baixo, baixa opacidade, não interativa. Cor via --watermark-color.
+   ─────────────────────────────────────────────────────────────────── */
+.v-watermark {
+  pointer-events: none;
+  user-select: none;
+  color: var(--watermark-color);
+  font-weight: 700;
+  line-height: 0.8;
+  white-space: nowrap;
+}
+
+/* ── Tipografia v4: letter-spacing negativo em títulos grandes ───────
+   Reforço das referências (estilo Resn): títulos >40px mais apertados.
+   ─────────────────────────────────────────────────────────────────── */
+.v-tight {
+  letter-spacing: -0.02em;
+}
+.v-tighter {
+  letter-spacing: -0.035em;
+}

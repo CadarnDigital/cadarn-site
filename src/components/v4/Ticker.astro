@@ -1,0 +1,37 @@
+---
+/**
+ * Ticker (v4 — Passo 4.3) — faixa marquee em loop infinito entre seções.
+ * Texto offwhite/caramelo sobre faixa dark. translateX infinito (só transform),
+ * CSS puro via .v-ticker / .v-ticker__track (v-shared.css). Dois grupos
+ * idênticos garantem loop contínuo (-50%). Em modo avaliação roda mesmo com
+ * reduced-motion porque o <body> da v4 carrega a classe .v-eval.
+ */
+interface Props {
+  /** Itens da faixa. Repetidos em 2 grupos para o loop contínuo. */
+  items?: string[];
+}
+
+const {
+  items = ['CADARN', 'ENGENHARIA DE LUCRO', 'MARKETING', 'GESTÃO', 'GROWTH'],
+} = Astro.props;
+
+// Repete o conjunto algumas vezes dentro de cada grupo para preencher telas largas.
+const group = [...items, ...items, ...items];
+---
+
+<div class="v-ticker border-y border-accent-metal/15 bg-surface-abyss py-4" aria-hidden="true">
+  <div class="v-ticker__track">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0 items-center">
+        {group.map((item) => (
+          <span class="flex items-center">
+            <span class="px-6 font-headline text-sm uppercase tracking-[0.25em] text-on-dark-strong">
+              {item}
+            </span>
+            <span class="text-accent-metal">·</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>

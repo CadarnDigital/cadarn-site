@@ -1,0 +1,316 @@
+---
+/**
+ * Home V4 — "premium tech cinematografica" em VINHO (identidade OFICIAL Cadarn).
+ * Base: cópia da /v3 (mesmo conteúdo textual, mesmo ritmo de cor) usando
+ * BaseLayoutV4 + componentes de src/components/v4/*. Sobre essa base entram os
+ * NOVOS elementos de movimento (referências Resn + Instituto Futuros):
+ *   - Ritual de abertura em 3 beats (CurtainIntro v4)
+ *   - HeroSlider (fundo que cicla, headline fixa)
+ *   - IlluminateText (texto que ilumina ao rolar) na seção de citação
+ *   - Ticker/marquee entre seções
+ *   - Watermark tipográfica gigante de fundo
+ *   - Labels verticais de seção
+ *   - Nav scroll-spy (HeaderV4)
+ *   - Virada de paleta no CTA final (o "destino" visual)
+ * Paleta 100% Cadarn (vinho/navy apoio/caramelo/offwhite). Pagina de validacao
+ * — noindex via BaseLayoutV4.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayoutV4 from '../../layouts/BaseLayoutV4.astro';
+import HeroV4 from '../../components/v4/HeroV4.astro';
+import GrainyBackground from '../../components/v4/GrainyBackground.astro';
+import Ticker from '../../components/v4/Ticker.astro';
+import { CurtainIntro } from '../../components/v4/CurtainIntro';
+import { MagneticButton } from '../../components/v4/MagneticButton';
+import { SpotlightCard } from '../../components/v4/SpotlightCard';
+import { IlluminateText } from '../../components/v4/IlluminateText';
+import Badge from '../../components/ui/Badge.astro';
+
+const numeros = [
+  { valor: '6', label: 'etapas proprietárias' },
+  { valor: '7', label: 'dias para o diagnóstico' },
+  { valor: '4', label: 'pilares de análise' },
+];
+
+const dores = [
+  { titulo: 'Investe e não sabe o que volta', desc: 'Tráfego, postagens, agência — e nenhuma métrica real de retorno.' },
+  { titulo: 'Depende de indicação', desc: 'Cresce quando indica. Para quando não. Zero previsibilidade.' },
+  { titulo: 'Faz tudo sozinho', desc: 'Marketing, vendas, operação — você é o gargalo do próprio negócio.' },
+];
+
+const triade = [
+  { pilar: 'Marketing', desc: 'Autoridade que gera demanda qualificada.' },
+  { pilar: 'Gestão', desc: 'Processos que geram previsibilidade.' },
+  { pilar: 'Growth', desc: 'Funil que gera escala mensurável.' },
+];
+
+const provas = [
+  { valor: '98%', desc: 'dos donos de PME decidem sozinhos em 4+ áreas', fonte: 'Locomotiva/Itaú 2024' },
+  { valor: '74%', desc: 'do orçamento de marketing vai para curto prazo', fonte: 'Conversion 2025' },
+  { valor: '96%', desc: 'ainda executam tarefas operacionais no dia a dia', fonte: 'Locomotiva/Itaú 2024' },
+];
+
+const cases = ['Clínica Premium', 'Imobiliária Alto Padrão', 'Escritório de Advocacia', 'Contabilidade Digital'];
+
+const allPosts = await getCollection('blog');
+const blogHighlights = allPosts
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 3);
+---
+
+<BaseLayoutV4 title="Home" description="Cadarn Martech — Engenharia de Lucro para prestadores de serviço premium. Marketing, gestão e growth integrados num sistema único.">
+
+  <!-- ═══ RITUAL DE ABERTURA — 3 beats (Passo 3) ═══ -->
+  <CurtainIntro client:load />
+
+  <!-- ═══ HERO — com HeroSlider de fundo (Passo 4.1) ═══ -->
+  <HeroV4 />
+
+  <!-- ═══ TICKER (Passo 4.3) — faixa marquee entre hero e números ═══ -->
+  <Ticker />
+
+  <!-- ═══ NÚMEROS — faixa operacional/controle (NAVY = cor de apoio) ═══ -->
+  <section class="relative overflow-hidden border-y border-accent-metal/15 bg-surface-navy">
+    <GrainyBackground variant="navy" />
+    <div class="relative z-10 mx-auto flex max-w-content flex-col items-center justify-center gap-10 px-4 py-12 sm:flex-row sm:gap-16 lg:gap-28 lg:py-14">
+      {numeros.map((n) => (
+        <div class="reveal-on-scroll text-center">
+          <span class="mx-auto mb-3 block h-px w-8 bg-accent-metal"></span>
+          <span class="font-accent text-6xl italic text-on-dark-strong lg:text-7xl">{n.valor}</span>
+          <p class="mt-2 font-body text-xs uppercase tracking-widest text-on-dark-muted">{n.label}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ DOR — seção light de respiro + LABEL VERTICAL (Passo 4.5) ═══ -->
+  <section id="dor" class="relative bg-offwhite py-16 text-vinho lg:py-28">
+    <!-- Label vertical de seção -->
+    <span class="v-label absolute left-4 top-24 hidden font-body text-[0.6rem] text-caramelo lg:block">Diagnóstico</span>
+    <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
+        <div class="reveal-on-scroll lg:sticky lg:top-24">
+          <p class="font-body text-sm uppercase tracking-widest text-caramelo">Soa familiar?</p>
+          <h2 class="v-tight mt-3 font-headline text-3xl font-bold leading-tight lg:text-4xl">
+            Você trabalha mais<br />do que deveria.<br />
+            E lucra menos<br />do que <span class="font-accent italic text-caramelo">merece.</span>
+          </h2>
+        </div>
+        <div class="space-y-6">
+          {dores.map((dor, i) => (
+            <div class:list={[
+              'reveal-on-scroll border-l-2 border-vinho/20 pl-6 transition-colors duration-200 hover:border-caramelo',
+              i === 1 && 'lg:ml-8',
+              i === 2 && 'lg:ml-16',
+            ]}>
+              <h3 class="font-headline text-xl font-bold">{dor.titulo}</h3>
+              <p class="mt-1 font-body text-vinho/60">{dor.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CITAÇÃO — fullbleed vinho + WATERMARK (4.4) + TEXTO QUE ILUMINA (4.2) ═══ -->
+  <section class="relative overflow-hidden bg-surface-vinho py-24 lg:py-36">
+    <GrainyBackground variant="vinho" />
+    <!-- Watermark tipográfica gigante de fundo -->
+    <span aria-hidden="true" class="v-watermark absolute -left-4 top-1/2 z-0 -translate-y-1/2 font-headline text-[clamp(7rem,22vw,18rem)]">CADARN</span>
+    <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <blockquote class="max-w-4xl">
+        <IlluminateText
+          client:visible
+          text={'Não é sobre fazer mais marketing. É sobre fazer o marketing certo.'}
+          highlights={['certo']}
+          className="font-accent text-3xl italic leading-relaxed text-on-dark-body lg:text-5xl"
+        />
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ═══ TRÍADE — dark + LABEL VERTICAL (4.5) ═══ -->
+  <section id="triade" class="relative overflow-hidden bg-surface-base py-16 lg:py-28">
+    <GrainyBackground variant="hero" />
+    <span class="v-label absolute left-4 top-24 hidden font-body text-[0.6rem] text-caramelo lg:block">Método</span>
+    <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="font-body text-sm uppercase tracking-widest text-accent-metal">A solução</p>
+        <h2 class="v-tight reveal-on-scroll mt-3 font-accent text-4xl italic text-on-dark-strong lg:text-5xl">
+          Três pilares. Um sistema.
+        </h2>
+      </div>
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {triade.map((item) => (
+          <SpotlightCard client:visible className="reveal-on-scroll border-l-2 border-accent-metal/40 bg-surface-raised/40 p-8 shadow-dark-md transition-colors duration-300 hover:border-accent-metal">
+            <h3 class="relative z-10 font-headline text-xl font-bold uppercase tracking-wide text-on-dark-strong">{item.pilar}</h3>
+            <p class="relative z-10 mt-3 font-body text-on-dark-body">{item.desc}</p>
+          </SpotlightCard>
+        ))}
+      </div>
+      <div class="mt-12">
+        <a
+          href="/metodo"
+          class="link-underline font-headline text-sm uppercase tracking-widest text-on-dark-muted transition-colors duration-200 hover:text-on-dark-strong"
+        >
+          Conheça o Método C.A.D.A.R.N.
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROVA — dark, números-selo + cases + LABEL VERTICAL (4.5) ═══ -->
+  <section id="prova" class="relative overflow-hidden border-t border-accent-metal/15 bg-surface-abyss py-16 lg:py-28">
+    <span class="v-label absolute left-4 top-24 hidden font-body text-[0.6rem] text-caramelo lg:block">Prova</span>
+    <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
+        <div class="lg:col-span-2">
+          <p class="font-body text-sm uppercase tracking-widest text-accent-metal">O problema é real</p>
+          <h2 class="v-tight reveal-on-scroll mt-3 font-headline text-3xl font-bold text-on-dark-strong lg:text-4xl">
+            O dono faz tudo.<br />O marketing não faz nada.
+          </h2>
+          <div class="mt-10 space-y-8">
+            {provas.map((p) => (
+              <div class="reveal-on-scroll">
+                <span class="mb-2 block h-px w-8 bg-accent-metal"></span>
+                <span class="font-accent text-5xl italic text-on-dark-strong">{p.valor}</span>
+                <p class="mt-1 font-body text-sm text-on-dark-muted">{p.desc}</p>
+                <p class="mt-0.5 font-body text-[10px] text-on-dark-muted/60">{p.fonte}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 lg:col-span-3">
+          {cases.map((name) => (
+            <SpotlightCard client:visible className="clip-reveal-trigger reveal-on-scroll relative aspect-[4/3] overflow-hidden border border-accent-metal/10 bg-surface-raised/40">
+              {/* overlay caramelo que se revela por clip-path no hover */}
+              <div class="clip-reveal pointer-events-none absolute inset-0 z-[1] bg-gradient-to-br from-accent-metal/15 to-transparent" aria-hidden="true"></div>
+              <div class="absolute inset-0 z-[2] flex flex-col justify-end bg-gradient-to-t from-surface-abyss/95 via-surface-abyss/40 to-transparent p-5">
+                <p class="font-headline text-sm font-bold text-on-dark-strong">{name}</p>
+                <p class="mt-1 text-xs text-accent-metal">Case em preparação</p>
+              </div>
+            </SpotlightCard>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TICKER (Passo 4.3) — faixa marquee entre prova e blog ═══ -->
+  <Ticker items={['DO CAOS AO MÉTODO', 'DO MÉTODO AO LUCRO', 'DO LUCRO À LIBERDADE']} />
+
+  <!-- ═══ BLOG — seção light curta ═══ -->
+  <section id="blog" class="bg-offwhite py-16 text-vinho lg:py-28">
+    <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-3">
+        <div class="lg:col-span-1">
+          <p class="font-body text-sm uppercase tracking-widest text-caramelo">Blog</p>
+          <h2 class="v-tight reveal-on-scroll mt-3 font-headline text-3xl font-bold lg:text-4xl">
+            Conteúdo que separa quem sabe de quem <span class="font-accent italic text-caramelo">acha</span> que sabe.
+          </h2>
+          <a href="/blog" class="link-underline mt-6 inline-block font-headline text-sm uppercase tracking-widest text-vinho transition-colors duration-200 hover:text-caramelo">
+            Ver todos
+          </a>
+        </div>
+        <div class="grid grid-cols-1 gap-6 lg:col-span-2 sm:grid-cols-2">
+          {blogHighlights.length > 0 ? (
+            blogHighlights.map((post, i) => (
+              <a href={`/blog/${post.id}`} class:list={['reveal-on-scroll group block', i === 0 && 'sm:col-span-2']}>
+                <article class="h-full border border-vinho/10 bg-offwhite p-5 shadow-card transition-shadow duration-200 hover:shadow-card-hover">
+                  <Badge category={post.data.category} />
+                  <h3 class="mt-3 font-headline text-lg font-bold text-vinho transition-colors duration-200 group-hover:text-caramelo">{post.data.title}</h3>
+                  <p class="mt-2 text-sm text-navy/70">{post.data.description}</p>
+                </article>
+              </a>
+            ))
+          ) : (
+            <div class="py-8 text-center sm:col-span-2">
+              <p class="font-body text-vinho/60">Artigos em preparação.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA FINAL — VIRADA DE PALETA (Passo 4.7): o "destino" visual ═══ -->
+  <section class="relative overflow-hidden py-24 lg:py-32" style="background: var(--cta-finale-bg);">
+    <GrainyBackground variant="hero" class="opacity-50" />
+    <!-- Watermark tipográfica reforça o ponto alto -->
+    <span aria-hidden="true" class="v-watermark absolute bottom-0 left-1/2 z-0 -translate-x-1/2 translate-y-1/4 font-headline text-[clamp(8rem,26vw,22rem)]">LUCRO</span>
+    <div class="relative z-10 mx-auto max-w-content px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="v-tight reveal-on-scroll font-accent text-4xl italic text-on-dark-strong lg:text-6xl">
+        Pronto para sair do <span style="color: var(--cta-finale-accent);">achismo?</span>
+      </h2>
+      <p class="reveal-on-scroll mx-auto mt-5 max-w-xl font-body text-lg text-on-dark-body">
+        O Scan de Autoridade analisa seu marketing em 4 pilares e entrega um diagnóstico com score de 0 a 100.
+      </p>
+      <div class="mt-10 flex flex-col items-center gap-3">
+        <MagneticButton client:visible href="/scan">
+          Faça seu Scan de Autoridade
+        </MagneticButton>
+        <p class="font-body text-sm text-on-dark-muted">Grátis · 5 minutos · Sem compromisso</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ NEWSLETTER ═══ -->
+  <section class="border-t border-accent-metal/15 bg-surface-abyss py-16 lg:py-20">
+    <div class="mx-auto max-w-article px-4 text-center">
+      <h3 class="font-headline text-2xl font-bold text-on-dark-strong lg:text-3xl">
+        Conteúdo que separa quem sabe de quem acha que sabe.
+      </h3>
+      <p class="mt-3 font-body text-on-dark-body">
+        Direto na caixa. Sem spam, sem enrolação.
+      </p>
+      <form id="newsletter-form-v4" class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <input
+          type="email"
+          name="email"
+          placeholder="seu@email.com"
+          required
+          class="w-full rounded-none border border-accent-metal/30 bg-surface-raised/40 px-4 py-3 font-body text-on-dark-strong placeholder:text-on-dark-muted focus:border-accent-metal focus:outline-none focus:ring-1 focus:ring-accent-metal sm:max-w-xs"
+        />
+        <button
+          type="submit"
+          class="rounded-none bg-gradient-to-br from-accent-metal-hi to-accent-metal px-6 py-3 font-headline font-semibold uppercase tracking-wider text-surface-abyss transition-shadow duration-300 hover:shadow-glow"
+        >
+          Quero receber
+        </button>
+      </form>
+      <p id="newsletter-feedback-v4" class="mt-3 hidden font-body text-sm text-on-dark-muted"></p>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('newsletter-form-v4') as HTMLFormElement | null;
+    const feedback = document.getElementById('newsletter-feedback-v4');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (form.elements.namedItem('email') as HTMLInputElement)?.value;
+
+      try {
+        const res = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        if (feedback) {
+          feedback.textContent = res.ok
+            ? 'Inscrição confirmada. Até a próxima edição.'
+            : 'Algo deu errado. Tente novamente.';
+          feedback.classList.remove('hidden');
+        }
+
+        if (res.ok) form.reset();
+      } catch {
+        if (feedback) {
+          feedback.textContent = 'Algo deu errado. Tente novamente.';
+          feedback.classList.remove('hidden');
+        }
+      }
+    });
+  </script>
+</BaseLayoutV4>
