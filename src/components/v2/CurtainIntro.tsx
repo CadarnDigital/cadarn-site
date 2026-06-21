@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { motion as motionTokens } from '../../lib/design-tokens';
 
-const INTRO_KEY = 'cadarn_v2_intro';
+/**
+ * MODO AVALIAÇÃO: a cortina toca a CADA carregamento (sem gating de sessão),
+ * para Fabiano revisar a abertura em todo refresh, em qualquer versão.
+ * Para produção, restaurar o gating de 1x/sessão (sessionStorage) — ver
+ * bloco comentado em useEffect/dismiss.
+ */
+const EVALUATION_MODE = true;
 
 /** Tempo de leitura da marca antes da cortina subir (ms). Teto total ~1,2s. */
 const BRAND_HOLD_MS = 720;
@@ -27,12 +33,18 @@ export const CurtainIntro = () => {
 
   useEffect(() => {
     if (prefersReduced) return;
-    const alreadyShown = sessionStorage.getItem(INTRO_KEY);
-    if (!alreadyShown) setVisible(true);
+    if (EVALUATION_MODE) {
+      setVisible(true);
+      return;
+    }
+    // Produção: só na primeira visita da sessão.
+    // const alreadyShown = sessionStorage.getItem('cadarn_v2_intro');
+    // if (!alreadyShown) setVisible(true);
   }, [prefersReduced]);
 
   const dismiss = (): void => {
-    sessionStorage.setItem(INTRO_KEY, '1');
+    // Produção: gravar flag de sessão.
+    // sessionStorage.setItem('cadarn_v2_intro', '1');
     setVisible(false);
   };
 
