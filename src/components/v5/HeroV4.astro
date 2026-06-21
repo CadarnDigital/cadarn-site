@@ -1,0 +1,55 @@
+---
+/**
+ * HeroV4 (cópia v5) — hero dark premium com HeroSlider de fundo (Passo 4.1).
+ * O fundo cicla entre estados duotone na cor da marca (crossfade automático),
+ * a headline fica FIXA por cima. GrainyBackground por cima do slider para
+ * manter a textura. HeadlineReveal (serifa oversize, tracking negativo) +
+ * MagneticButton + BorderDrawButton.
+ *
+ * DIFERENÇA v5: a bússola decorativa do hero NÃO é mais um <img> estático aqui.
+ * Ela é renderizada pelo island IntroRitual (mesmo layoutId="cadarn-compass"),
+ * que parte do centro no ritual de abertura e POUSA exatamente neste slot
+ * (right-0 / top-1/2), continuando a girar para sempre. O halo caramelo também
+ * viaja com ela. Mantemos só um anchor invisível como documentação do destino.
+ */
+import GrainyBackground from './GrainyBackground.astro';
+import { HeroSlider } from './HeroSlider';
+import { HeadlineReveal } from './HeadlineReveal';
+import { MagneticButton } from './MagneticButton';
+import { BorderDrawButton } from './BorderDrawButton';
+
+const HERO_LINES = ['Do caos ao método.', 'Do método ao lucro.', 'Do lucro à liberdade.'];
+---
+
+<section id="hero" class="relative overflow-hidden">
+  <!-- Fundo que cicla entre estados (placeholders duotone na cor da marca) -->
+  <HeroSlider client:load />
+  <!-- Textura de grão por cima do slider -->
+  <GrainyBackground variant="hero" />
+
+  <!-- A bússola decorativa do hero é provida pelo IntroRitual (layoutId).
+       Slot de destino documentado: right-0, top-1/2, 520x520, opacity ~0.05. -->
+
+  <div class="relative z-10 mx-auto flex min-h-[92vh] max-w-content flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
+    <p class="font-body text-xs uppercase tracking-[0.4em] text-accent-metal">
+      Engenharia de Lucro
+    </p>
+
+    <div class="mt-6 max-w-4xl">
+      <HeadlineReveal client:load lines={HERO_LINES} />
+    </div>
+
+    <p class="mt-8 max-w-xl font-body text-lg leading-relaxed text-on-dark-body">
+      Marketing, gestão e growth integrados num sistema único para prestadores de serviço premium.
+    </p>
+
+    <div class="mt-12 flex flex-wrap items-center gap-5">
+      <MagneticButton client:visible href="/scan">
+        Faça seu Scan de Autoridade
+      </MagneticButton>
+      <BorderDrawButton client:visible href="/metodo">
+        Conheça o Método
+      </BorderDrawButton>
+    </div>
+  </div>
+</section>
