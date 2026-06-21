@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════════
+   tokens-v2.css — CORES da v2 "premium tech" do site Cadarn: NAVY-dominante.
+   Importado SÓ por BaseLayoutV2 (não global) junto com v-shared.css.
+
+   Conceito v2: "Sala de comando à meia-luz" em NAVY — navy = cor DOMINANTE
+   de superfície/peso; vinho = APOIO (acento de identidade, 1-2 seções);
+   offwhite = base quente de respiro; caramelo = acento fino metálico.
+
+   Define APENAS CSS vars de cor/gradiente/cortina + texto on-dark + acento
+   metálico + shadows. Utilitárias (.reveal-on-scroll, .link-underline,
+   .spotlight-card, .clip-reveal) e tokens de motion/grão vivem em v-shared.css.
+
+   A diferença entre /v2 (este, navy) e /v3 (tokens-v3.css, vinho) é SÓ a cor:
+   os componentes em src/components/v2/* são compartilhados pelas duas páginas.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Superfícies dark DOMINANTES — derivadas do navy oficial #0e2a4a ── */
+  --surface-base: #0e2a4a;   /* navy — superfície dark dominante */
+  --surface-abyss: #081520;  /* navy mais escuro — abismo/respiro */
+  --surface-raised: #143356; /* navy elevado — cards sobre dark */
+  --surface-vinho: #2a0a08;  /* vinho de apoio — seções de citação */
+
+  /* ── Superfícies de APOIO (vinho — acento de identidade, 1-2 seções) ── */
+  --surface-navy: #2a0a08;       /* na v2 a "faixa de apoio" é vinho */
+  --surface-navy-deep: #1c0605;
+  --surface-navy-raised: #3d0a07;
+
+  /* ── Texto sobre dark (comum às duas versões) ── */
+  --on-dark-strong: #f1e4d3;
+  --on-dark-body: rgba(241, 228, 211, 0.82);
+  --on-dark-muted: rgba(241, 228, 211, 0.60);
+
+  /* ── Acento metálico (caramelo — comum; só filete/acento, nunca bloco) ── */
+  --accent-metal: #9a7a51;
+  --accent-metal-hi: #b89766;
+  --accent-metal-glow: rgba(154, 122, 81, 0.35);
+
+  /* ── Cortina da CurtainIntro — navy nesta versão ── */
+  --curtain-color: #0e2a4a;
+
+  /* ── Shadows dark (comuns) ── */
+  --shadow-dark-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-dark-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-dark-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 40px var(--accent-metal-glow);
+
+  /* ── Gradientes — recalculados sobre navy dominante ── */
+  /* hero/vinho = dominante navy; navy(variant) reservado p/ faixa de apoio (vinho) */
+  --gradient-hero: radial-gradient(120% 120% at 50% 0%, var(--surface-base) 0%, var(--surface-abyss) 70%);
+  --gradient-vinho: radial-gradient(120% 120% at 50% 0%, var(--surface-base) 0%, var(--surface-abyss) 82%);
+  --gradient-navy: radial-gradient(120% 120% at 50% 0%, var(--surface-navy) 0%, var(--surface-navy-deep) 80%);
+}

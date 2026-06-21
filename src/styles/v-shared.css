@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════════════════════
+   v-shared.css — Camada COMUM das versões dark premium do site Cadarn
+   (v2 = navy-dominante / v3 = vinho-dominante).
+
+   Contém SÓ o que NÃO depende da cor dominante:
+   - tokens de motion (durations, easings, stagger)
+   - tokens de grão
+   - utilitárias CSS puras: .reveal-on-scroll, .link-underline,
+     .spotlight-card, .clip-reveal
+
+   A cor dominante (superfícies, gradientes, cortina, acento metálico,
+   texto on-dark) vive em tokens-v2.css (navy) e tokens-v3.css (vinho),
+   importados por BaseLayoutV2 / BaseLayoutV3 respectivamente.
+
+   Cada layout importa: v-shared.css + (tokens-v2.css | tokens-v3.css).
+   NÃO é importado globalmente — não vaza para a v1.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Grão (comum) ── */
+  --grain-opacity: 0.06;
+  --grain-blend: soft-light;
+
+  /* ── Motion durations ── */
+  --motion-instant: 120ms;
+  --motion-fast: 220ms;
+  --motion-base: 400ms;
+  --motion-slow: 650ms;
+  --motion-curtain: 800ms;
+
+  /* ── Easings ── */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-cinematic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring-ui: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Stagger ── */
+  --stagger-step: 60ms;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   .reveal-on-scroll — reveal zero-JS via CSS scroll-driven animations.
+   Anti-CLS: o elemento reserva seu espaço; só transform+opacity animam.
+   Fallback: navegadores sem animation-timeline mostram conteúdo estático.
+   Reduced-motion: força visível estático.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+      will-change: transform, opacity;
+    }
+  }
+}
+
+@supports not (animation-timeline: view()) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   .link-underline — sublinhado animado caramelo (CSS puro, zero JS).
+   ::after com scaleX 0 -> 1, origin left. Só transform anima.
+   Reduced-motion: aparece sem animar.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background-color: var(--accent-metal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-in-out-cinematic);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-underline::after {
+    transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   .spotlight-card — glow caramelo discreto que segue o cursor.
+   As CSS vars --x/--y são setadas via JS (ref.style.setProperty, sem
+   re-render). Pseudo-elemento com radial-gradient caramelo ~10%.
+   Só pointer:fine. Reduced-motion: sem glow.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out-soft);
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(154, 122, 81, 0.10),
+    transparent 40%
+  );
+}
+
+@media (pointer: fine) {
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card::before {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   .clip-reveal — revelação por clip-path no hover (CSS puro).
+   inset(0 100% 0 0) -> inset(0). Direção única (esquerda -> direita).
+   Aplicar no elemento de imagem/overlay. Só transform-equivalente (clip-path).
+   ═══════════════════════════════════════════════════════════════════ */
+
+.clip-reveal {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.7s var(--ease-out-expo);
+}
+.clip-reveal-trigger:hover .clip-reveal,
+.clip-reveal-trigger:focus-visible .clip-reveal {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clip-reveal {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+  }
+}

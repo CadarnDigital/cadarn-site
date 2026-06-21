@@ -1,0 +1,56 @@
+---
+/**
+ * GrainyBackground — fundo dark premium, zero JS.
+ * Gradiente radial (hero/vinho = dominante; navy = apoio) + camada de grão
+ * via feTurbulence SVG. Estático. position:absolute inset-0 pointer-events-none.
+ */
+interface Props {
+  variant?: 'hero' | 'vinho' | 'navy';
+  class?: string;
+}
+
+const GRADIENTS = {
+  hero: 'var(--gradient-hero)',
+  vinho: 'var(--gradient-vinho)',
+  navy: 'var(--gradient-navy)',
+} as const;
+
+const { variant = 'hero', class: className } = Astro.props;
+const gradient = GRADIENTS[variant];
+---
+
+<div
+  class:list={['grainy-bg', className]}
+  style={`background: ${gradient};`}
+  aria-hidden="true"
+>
+  <svg class="grainy-bg__noise" xmlns="http://www.w3.org/2000/svg">
+    <filter id="grainy-noise">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.8"
+        numOctaves="3"
+        stitchTiles="stitch"
+      />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grainy-noise)" />
+  </svg>
+</div>
+
+<style>
+  .grainy-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .grainy-bg__noise {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+  }
+</style>
