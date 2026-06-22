@@ -9,6 +9,8 @@ export const IntroRitualV10 = () => {
   const isExiting = useRef(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayOpacity = useMotionValue(1);
+  // Nonce por sessão — quebra cache parcial do browser entre visitas
+  const nonce = useRef(Date.now());
 
   const close = () => {
     if (isExiting.current) return;
@@ -60,7 +62,7 @@ export const IntroRitualV10 = () => {
     >
       <video
         ref={videoRef}
-        src="/intro-v10.mp4"
+        src={`/intro-v10.mp4?s=${nonce.current}`}
         autoPlay
         muted
         playsInline
