@@ -6,9 +6,7 @@ import { lockScroll, unlockScroll } from './lenis-lock';
 export const IntroRitualV10 = () => {
   const skipMotion = useSkipMotion();
   const [isVisible, setIsVisible] = useState(true);
-  const [videoSrc, setVideoSrc] = useState('');
   const isExiting = useRef(false);
-  const blobUrlRef = useRef('');
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayOpacity = useMotionValue(1);
 
@@ -18,7 +16,6 @@ export const IntroRitualV10 = () => {
     motionAnimate(overlayOpacity, 0, { duration: 0.8, ease: 'easeInOut' }).then(() => {
       setIsVisible(false);
       unlockScroll();
-      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
     });
   };
 
@@ -32,40 +29,21 @@ export const IntroRitualV10 = () => {
 
     lockScroll();
 
-    // Carrega o vídeo completo em memória antes de tocar.
-    // Elimina stutter causado por Range Requests no dev server (Vite).
-    const controller = new AbortController();
-    fetch('/intro-v10.mp4?v=2', { signal: controller.signal })
-      .then(r => r.blob())
-      .then(blob => {
-        const url = URL.createObjectURL(blob);
-        blobUrlRef.current = url;
-        setVideoSrc(url);
-      })
-      .catch(() => { if (!isExiting.current) close(); });
-
-    const absoluteFallback = setTimeout(() => {
-      if (!isExiting.current) close();
-    }, 15000);
-
-    return () => {
-      controller.abort();
-      clearTimeout(absoluteFallback);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Wire ended listener após blob estar pronto e vídeo montado
-  useEffect(() => {
-    if (!videoSrc) return;
     const video = videoRef.current;
     if (!video) return;
 
     const onEnded = () => setTimeout(close, 1000);
+    const absoluteFallback = setTimeout(() => {
+      if (!isExiting.current) close();
+    }, 12000);
+
     video.addEventListener('ended', onEnded);
-    return () => video.removeEventListener('ended', onEnded);
+    return () => {
+      video.removeEventListener('ended', onEnded);
+      clearTimeout(absoluteFallback);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoSrc]);
+  }, []);
 
   if (!isVisible) return null;
 
@@ -80,23 +58,21 @@ export const IntroRitualV10 = () => {
         overflow: 'hidden',
       }}
     >
-      {videoSrc && (
-        <video
-          ref={videoRef}
-          src={videoSrc}
-          autoPlay
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            pointerEvents: 'none',
-          }}
-        />
-      )}
+      <video
+        ref={videoRef}
+        src="/intro-v10.mp4"
+        autoPlay
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          pointerEvents: 'none',
+        }}
+      />
 
       <button
         type="button"
