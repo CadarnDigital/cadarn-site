@@ -1,0 +1,57 @@
+/* ═══════════════════════════════════════════════════════════════════
+   tokens-v8.css — v8 "engrenagem→LOGO Cadarn" (evolução do storyboard 2026-06-21).
+   Cópia de tokens-v7.css (paleta idêntica). Importado SOMENTE por BaseLayoutV8.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --surface-base: #3d0a07;
+  --surface-abyss: #2a0a08;
+  --surface-raised: #4d130d;
+  --surface-vinho: #3d0a07;
+
+  --surface-navy: #0e2a4a;
+  --surface-navy-deep: #081520;
+  --surface-navy-raised: #143356;
+
+  --on-dark-strong: #f1e4d3;
+  --on-dark-body: rgba(241, 228, 211, 0.82);
+  --on-dark-muted: rgba(241, 228, 211, 0.60);
+
+  --accent-metal: #9a7a51;
+  --accent-metal-hi: #b89766;
+  --accent-metal-glow: rgba(154, 122, 81, 0.35);
+
+  --curtain-color: #5e0f0b;
+  --curtain-track: rgba(241, 228, 211, 0.12);
+  --curtain-progress: var(--accent-metal);
+
+  --shadow-dark-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-dark-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-dark-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --shadow-glow: 0 0 40px var(--accent-metal-glow);
+
+  --gradient-hero: radial-gradient(120% 120% at 50% 0%, var(--surface-base) 0%, var(--surface-abyss) 70%);
+  --gradient-vinho: radial-gradient(120% 120% at 50% 0%, var(--surface-base) 0%, var(--surface-abyss) 82%);
+  --gradient-navy: radial-gradient(120% 120% at 50% 0%, var(--surface-navy) 0%, var(--surface-navy-deep) 80%);
+
+  --hero-state-1: radial-gradient(130% 130% at 30% 20%, #4d130d 0%, var(--surface-abyss) 75%);
+  --hero-state-2: radial-gradient(130% 130% at 70% 30%, #3d0a07 0%, #1f0707 80%);
+  --hero-state-3: radial-gradient(130% 130% at 50% 10%, var(--surface-navy) 0%, var(--surface-abyss) 78%);
+  --duotone-shadow: #2a0a08;
+  --duotone-light: #9a7a51;
+
+  --watermark-color: rgba(154, 122, 81, 0.05);
+  --vlabel-color: var(--accent-metal);
+
+  --cta-finale-bg: radial-gradient(120% 140% at 50% 0%, #6e120c 0%, #4a0d09 70%);
+  --cta-finale-accent: var(--accent-metal-hi);
+
+  --v6-hero-photo-1: linear-gradient(135deg, #4d130d 0%, #2a0a08 60%, #1f0707 100%);
+  --v6-hero-photo-2: linear-gradient(120deg, #5e0f0b 0%, #3d0a07 55%, #1f0707 100%);
+  --v6-hero-photo-3: linear-gradient(150deg, #4a0d09 0%, #2a0a08 50%, #160505 100%);
+  --v6-duotone-shadow: #2a0a08;
+  --v6-duotone-light: #9a7a51;
+  --v6-grain-breathe-from: 0.05;
+  --v6-grain-breathe-to: 0.085;
+  --v6-ticker-base: 32s;
+}
