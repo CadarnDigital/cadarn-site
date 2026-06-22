@@ -3,17 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { EVALUATION_MODE, useSkipMotion } from './use-motion-gate';
 import { lockScroll, unlockScroll } from './lenis-lock';
 
-/**
- * IntroRitualV10 — VÍDEO REAL, SAÍDA AUTOMÁTICA.
- *
- * Vídeo: /intro-v10.mp4 (3.09s, 1080p — engrenagens + bússola + logo Cadarn)
- * Ao terminar: aguarda 1s → fade out → site abre. Sem logo extra, sem CTA.
- */
-
 export const IntroRitualV10 = () => {
   const skipMotion = useSkipMotion();
   const [isVisible, setIsVisible] = useState(true);
+  const [videoSrc, setVideoSrc] = useState('');
   const isExiting = useRef(false);
+  const blobUrlRef = useRef('');
   const videoRef = useRef<HTMLVideoElement>(null);
   const overlayOpacity = useMotionValue(1);
 
@@ -23,6 +18,7 @@ export const IntroRitualV10 = () => {
     motionAnimate(overlayOpacity, 0, { duration: 0.8, ease: 'easeInOut' }).then(() => {
       setIsVisible(false);
       unlockScroll();
+      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
     });
   };
 
@@ -36,30 +32,40 @@ export const IntroRitualV10 = () => {
 
     lockScroll();
 
-    const video = videoRef.current;
-    if (!video) return;
+    // Carrega o vídeo completo em memória antes de tocar.
+    // Elimina stutter causado por Range Requests no dev server (Vite).
+    const controller = new AbortController();
+    fetch('/intro-v10.mp4?v=2', { signal: controller.signal })
+      .then(r => r.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        blobUrlRef.current = url;
+        setVideoSrc(url);
+      })
+      .catch(() => { if (!isExiting.current) close(); });
 
-    // Evento nativo — mais confiável que onEnded do React
-    const onEnded = () => setTimeout(close, 1000);
-    video.addEventListener('ended', onEnded);
-
-    // Fallback baseado na duração: fecha 1.5s após o fim esperado
-    const durationFallback = setTimeout(() => {
-      if (!isExiting.current) close();
-    }, (video.duration || 3.09) * 1000 + 1500);
-
-    // Fallback absoluto: 12s
     const absoluteFallback = setTimeout(() => {
       if (!isExiting.current) close();
-    }, 12000);
+    }, 15000);
 
     return () => {
-      video.removeEventListener('ended', onEnded);
-      clearTimeout(durationFallback);
+      controller.abort();
       clearTimeout(absoluteFallback);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Wire ended listener após blob estar pronto e vídeo montado
+  useEffect(() => {
+    if (!videoSrc) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onEnded = () => setTimeout(close, 1000);
+    video.addEventListener('ended', onEnded);
+    return () => video.removeEventListener('ended', onEnded);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoSrc]);
 
   if (!isVisible) return null;
 
@@ -74,21 +80,23 @@ export const IntroRitualV10 = () => {
         overflow: 'hidden',
       }}
     >
-      <video
-        ref={videoRef}
-        src="/intro-v10.mp4"
-        autoPlay
-        muted
-        playsInline
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          pointerEvents: 'none',
-        }}
-      />
+      {videoSrc && (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          autoPlay
+          muted
+          playsInline
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
 
       <button
         type="button"
