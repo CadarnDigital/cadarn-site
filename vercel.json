@@ -1,6 +1,13 @@
 {
   "headers": [
     {
+      "source": "/intro-v10.mp4",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "Accept-Ranges", "value": "bytes" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
