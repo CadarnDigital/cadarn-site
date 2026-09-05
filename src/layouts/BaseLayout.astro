@@ -8,12 +8,14 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  showSplash?: boolean;
 }
 
 const {
   title,
   description = 'Cadarn Martech — Marketing · Gestão · Growth',
   ogImage = '/og-default.png',
+  showSplash = true,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://cadarn.com.br');
@@ -96,8 +98,12 @@ const fullTitle = title === 'Home' ? 'Cadarn Martech — Marketing · Gestão ·
     </style>
   </head>
   <body class="flex min-h-screen flex-col">
-    <div class="splash-cover" id="splash-cover"></div>
-    <SplashScreen client:load />
+    {showSplash && (
+      <>
+        <div class="splash-cover" id="splash-cover"></div>
+        <SplashScreen client:load />
+      </>
+    )}
     <Header />
     <main class="flex-1 pt-16">
       <slot />
