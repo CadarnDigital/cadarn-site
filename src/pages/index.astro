@@ -1,17 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionWrapper from '../components/ui/SectionWrapper.astro';
-import { Button } from '../components/ui/Button';
-import CTABlock from '../components/ui/CTABlock.astro';
-import Card from '../components/ui/Card.astro';
+import '../styles/v-shared.css';
+import '../styles/tokens-v10.css';
+import HeroV6 from '../components/v6/HeroV6.astro';
+import GrainyBackground from '../components/v6/GrainyBackground.astro';
+import { Ticker } from '../components/v6/Ticker';
+import { IntroRitualV10 } from '../components/v10/IntroRitualV10';
+import { MagneticButton } from '../components/v6/MagneticButton';
+import { SpotlightCard } from '../components/v6/SpotlightCard';
+import { IlluminateText } from '../components/v6/IlluminateText';
+import { WatermarkParallax } from '../components/v6/WatermarkParallax';
 import Badge from '../components/ui/Badge.astro';
-import OversizedText from '../components/ui/OversizedText.astro';
-import Divider from '../components/ui/Divider.astro';
-import NewsletterBlock from '../components/ui/NewsletterBlock.astro';
-import PhotoPlaceholder from '../components/ui/PhotoPlaceholder.astro';
-
-const HERO_PHRASE = 'Do caos ao método.\nDo método ao lucro.\nDo lucro à liberdade.';
 
 const numeros = [
   { valor: '6', label: 'etapas proprietárias' },
@@ -26,10 +26,18 @@ const dores = [
 ];
 
 const triade = [
-  { pilar: 'Marketing', desc: 'Autoridade que gera demanda qualificada.', cor: 'border-l-vinho' },
-  { pilar: 'Gestão', desc: 'Processos que geram previsibilidade.', cor: 'border-l-navy' },
-  { pilar: 'Growth', desc: 'Funil que gera escala mensurável.', cor: 'border-l-caramelo' },
+  { pilar: 'Marketing', desc: 'Autoridade que gera demanda qualificada.' },
+  { pilar: 'Gestão', desc: 'Processos que geram previsibilidade.' },
+  { pilar: 'Growth', desc: 'Funil que gera escala mensurável.' },
 ];
+
+const provas = [
+  { valor: '98%', desc: 'dos donos de PME decidem sozinhos em 4+ áreas', fonte: 'Locomotiva/Itaú 2024' },
+  { valor: '74%', desc: 'do orçamento de marketing vai para curto prazo', fonte: 'Conversion 2025' },
+  { valor: '96%', desc: 'ainda executam tarefas operacionais no dia a dia', fonte: 'Locomotiva/Itaú 2024' },
+];
+
+const cases = ['Clínica Premium', 'Imobiliária Alto Padrão', 'Escritório de Advocacia', 'Contabilidade Digital'];
 
 const allPosts = await getCollection('blog');
 const blogHighlights = allPosts
@@ -37,243 +45,247 @@ const blogHighlights = allPosts
   .slice(0, 3);
 ---
 
-<BaseLayout title="Home" description="Cadarn Martech — Engenharia de Lucro para prestadores de serviço premium. Marketing, gestão e growth integrados num sistema único.">
+<BaseLayout title="Home" description="Cadarn Martech — Engenharia de Lucro para prestadores de serviço premium. Marketing, gestão e growth integrados num sistema único." showSplash={false}>
 
-  <!-- ═══ HERO — Split assimétrico: texto 60% + foto tríade 40% ═══ -->
-  <div id="hero">
-  <SectionWrapper variant="dark" class="!py-0">
-    <div class="grid min-h-[85vh] grid-cols-1 items-center gap-8 py-12 lg:grid-cols-5 lg:gap-16 lg:py-0">
-      <!-- Texto -->
-      <div class="lg:col-span-3">
-        <p class="font-body text-xs uppercase tracking-[0.3em] text-caramelo">Engenharia de Lucro</p>
-        <h1 class="mt-4 font-headline text-4xl font-bold leading-[1.1] lg:text-5xl xl:text-6xl">
-          {HERO_PHRASE.split('\n').map((line, i) => (
-            <Fragment>
-              {i > 0 && <br />}
-              {line}
-            </Fragment>
-          ))}
-        </h1>
-        <p class="mt-6 max-w-lg font-body text-lg text-offwhite/60">
-          Marketing, gestão e growth integrados num sistema único para prestadores de serviço premium.
-        </p>
-        <div class="mt-10 flex flex-wrap items-center gap-4">
-          <Button variant="secondary" size="lg" href="/scan">Faça seu Scan de Autoridade</Button>
-          <Button variant="ghost" size="md" href="/metodo">Conheça o Método →</Button>
-        </div>
-      </div>
-      <!-- Foto tríade -->
-      <div class="lg:col-span-2">
-        <PhotoPlaceholder label="Foto Tríade — Fabiano, Samira, Gui" aspect="portrait" class="rounded-none" />
-      </div>
-    </div>
+  <style is:inline>
+    #v10-intro-cover { position: fixed; inset: 0; z-index: 9998; background: #5e0f0b; pointer-events: none; }
+  </style>
+  <div id="v10-intro-cover" aria-hidden="true"></div>
 
-    <!-- Bússola decorativa de fundo (sutil) -->
-    <div class="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 opacity-[0.03]">
-      <img src="/logo-splash.png" alt="" class="h-[600px] w-[600px]" aria-hidden="true" />
-    </div>
-  </SectionWrapper>
-  </div>
+  <IntroRitualV10 client:idle />
 
-  <!-- ═══ NÚMEROS — Faixa de impacto visual ═══ -->
-  <div class="bg-navy py-8 lg:py-10">
-    <div class="mx-auto flex max-w-content flex-col items-center justify-center gap-8 px-4 sm:flex-row sm:gap-16 lg:gap-24">
+  <HeroV6 />
+  <Ticker client:visible />
+
+  <section class="relative overflow-hidden border-y border-accent-metal/15 bg-surface-navy">
+    <GrainyBackground variant="navy" />
+    <div class="relative z-10 mx-auto flex max-w-content flex-col items-center justify-center gap-10 px-4 py-12 sm:flex-row sm:gap-16 lg:gap-28 lg:py-14">
       {numeros.map((n) => (
-        <div class="text-center">
-          <span class="font-headline text-5xl font-bold text-caramelo lg:text-6xl">{n.valor}</span>
-          <p class="mt-1 font-body text-xs uppercase tracking-widest text-offwhite/50">{n.label}</p>
+        <div class="reveal-on-scroll text-center">
+          <span class="mx-auto mb-3 block h-px w-8 bg-accent-metal"></span>
+          <span class="font-accent text-6xl italic text-on-dark-strong lg:text-7xl">{n.valor}</span>
+          <p class="mt-2 font-body text-xs uppercase tracking-widest text-on-dark-muted">{n.label}</p>
         </div>
       ))}
     </div>
-  </div>
+  </section>
 
-  <!-- ═══ DOR — Layout staggered, não grid uniforme ═══ -->
-  <SectionWrapper variant="light" class="!py-16 lg:!py-28" id="dor">
-    <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
-      <!-- Lado esquerdo: headline + copy visceral -->
-      <div class="lg:sticky lg:top-24">
-        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Soa familiar?</p>
-        <h2 class="mt-3 font-headline text-3xl font-bold leading-tight lg:text-4xl">
-          Você trabalha mais<br />do que deveria.<br />
-          E lucra menos<br />do que <span class="font-accent italic text-caramelo">merece.</span>
-        </h2>
-      </div>
-      <!-- Lado direito: cards de dor escalonados -->
-      <div class="space-y-6">
-        {dores.map((dor, i) => (
-          <div class:list={[
-            'border-l-2 border-vinho/20 pl-6 transition-all duration-200 hover:border-caramelo',
-            i === 1 && 'lg:ml-8',
-            i === 2 && 'lg:ml-16',
-          ]}>
-            <h3 class="font-headline text-xl font-bold">{dor.titulo}</h3>
-            <p class="mt-1 font-body text-vinho/60">{dor.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </SectionWrapper>
-
-  <!-- ═══ TRANSIÇÃO — Citação fullbleed com respiro ═══ -->
-  <div class="bg-vinho py-16 lg:py-24">
+  <section id="dor" class="relative bg-offwhite py-16 text-vinho lg:py-28">
+    <span class="v-label absolute left-4 top-24 hidden font-body text-[0.6rem] text-caramelo lg:block">Diagnóstico</span>
     <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center gap-8 lg:gap-16">
-        <OversizedText text="M" class="hidden lg:block shrink-0 !text-[12rem] !text-caramelo/10" />
-        <blockquote>
-          <p class="font-accent text-2xl italic leading-relaxed text-offwhite/80 lg:text-4xl">
-            "Não é sobre fazer mais marketing.<br />
-            É sobre fazer o marketing <span class="text-caramelo">certo.</span>"
-          </p>
-        </blockquote>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ TRÍADE — Split com foto Samira ═══ -->
-  <SectionWrapper variant="light" class="!py-16 lg:!py-28" id="triade">
-    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-      <!-- Foto Samira -->
-      <div class="order-2 lg:order-1">
-        <PhotoPlaceholder label="Foto Samira — em ação, branding" aspect="square" />
-      </div>
-      <!-- Conteúdo -->
-      <div class="order-1 lg:order-2">
-        <p class="font-body text-sm uppercase tracking-widest text-caramelo">A solução</p>
-        <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
-          Três pilares.<br />Um sistema.
-        </h2>
-        <div class="mt-10 space-y-6">
-          {triade.map((item) => (
-            <div class:list={['border-l-4 pl-6', item.cor]}>
-              <h3 class="font-headline text-xl font-bold">{item.pilar}</h3>
-              <p class="mt-1 font-body text-vinho/60">{item.desc}</p>
+      <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-2">
+        <div class="reveal-on-scroll lg:sticky lg:top-24">
+          <p class="font-body text-sm uppercase tracking-widest text-caramelo">Soa familiar?</p>
+          <h2 class="v-tight mt-3 font-headline text-3xl font-bold leading-tight lg:text-4xl">
+            Você trabalha mais<br />do que deveria.<br />
+            E lucra menos<br />do que <span class="font-accent italic text-caramelo">merece.</span>
+          </h2>
+        </div>
+        <div class="space-y-6">
+          {dores.map((dor, i) => (
+            <div class:list={[
+              'reveal-on-scroll border-l-2 border-vinho/20 pl-6 transition-colors duration-200 hover:border-caramelo',
+              i === 1 && 'lg:ml-8',
+              i === 2 && 'lg:ml-16',
+            ]}>
+              <h3 class="font-headline text-xl font-bold">{dor.titulo}</h3>
+              <p class="mt-1 font-body text-vinho/60">{dor.desc}</p>
             </div>
           ))}
         </div>
-        <div class="mt-10">
-          <Button variant="secondary" size="md" href="/metodo">Conheça o Método C.A.D.A.R.N. →</Button>
-        </div>
       </div>
     </div>
-  </SectionWrapper>
+  </section>
 
-  <Divider />
+  <section class="relative overflow-hidden bg-surface-vinho py-24 lg:py-36">
+    <GrainyBackground variant="vinho" />
+    <WatermarkParallax client:visible text="CADARN" align="left" topPercent={50} />
+    <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <blockquote class="max-w-4xl">
+        <IlluminateText
+          client:visible
+          text={'Não é sobre fazer mais marketing. É sobre fazer o marketing certo.'}
+          highlights={['certo']}
+          className="font-accent text-3xl italic leading-relaxed lg:text-5xl"
+        />
+      </blockquote>
+    </div>
+  </section>
 
-  <!-- ═══ PROVA — Números de impacto + cases placeholder ═══ -->
-  <SectionWrapper variant="dark" class="!py-16 lg:!py-28" id="prova">
-    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
-      <!-- Métricas lado esquerdo -->
-      <div class="lg:col-span-2">
-        <p class="font-body text-sm uppercase tracking-widest text-caramelo">O problema é real</p>
-        <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
-          O dono faz tudo.<br />O marketing não faz nada.
+  <section id="triade" class="relative overflow-hidden bg-surface-base py-16 lg:py-28">
+    <GrainyBackground variant="hero" />
+    <span class="v-label absolute left-4 top-24 hidden font-body text-[0.6rem] text-caramelo lg:block">Método</span>
+    <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <p class="font-body text-sm uppercase tracking-widest text-accent-metal">A solução</p>
+        <h2 class="v-tight reveal-on-scroll mt-3 font-accent text-4xl italic text-on-dark-strong lg:text-5xl">
+          Três pilares. Um sistema.
         </h2>
-        <div class="mt-10 space-y-8">
-          <div>
-            <span class="font-headline text-5xl font-bold text-caramelo">98%</span>
-            <p class="mt-1 font-body text-sm text-offwhite/50">dos donos de PME decidem sozinhos em 4+ áreas</p>
-            <p class="mt-0.5 font-body text-[10px] text-offwhite/30">Locomotiva/Itaú 2024</p>
-          </div>
-          <div>
-            <span class="font-headline text-5xl font-bold text-caramelo">74%</span>
-            <p class="mt-1 font-body text-sm text-offwhite/50">do orçamento de marketing vai para curto prazo</p>
-            <p class="mt-0.5 font-body text-[10px] text-offwhite/30">Conversion 2025</p>
-          </div>
-          <div>
-            <span class="font-headline text-5xl font-bold text-caramelo">96%</span>
-            <p class="mt-1 font-body text-sm text-offwhite/50">ainda executam tarefas operacionais no dia a dia</p>
-            <p class="mt-0.5 font-body text-[10px] text-offwhite/30">Locomotiva/Itaú 2024</p>
-          </div>
-        </div>
       </div>
-      <!-- Cases grid -->
-      <div class="lg:col-span-3 grid grid-cols-2 gap-4">
-        {['Clínica Premium', 'Imobiliária Alto Padrão', 'Escritório de Advocacia', 'Contabilidade Digital'].map((name) => (
-          <div class="group relative aspect-[4/3] overflow-hidden bg-navy/50">
-            <div class="absolute inset-0 flex flex-col justify-end p-5 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent">
-              <p class="font-headline text-sm font-bold text-offwhite">{name}</p>
-              <p class="mt-1 text-xs text-caramelo">Case em preparação</p>
-            </div>
-          </div>
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {triade.map((item) => (
+          <SpotlightCard client:visible className="reveal-on-scroll border-l-2 border-accent-metal/40 bg-surface-raised/40 p-8 shadow-dark-md transition-colors duration-300 hover:border-accent-metal">
+            <h3 class="relative z-10 font-headline text-xl font-bold uppercase tracking-wide text-on-dark-strong">{item.pilar}</h3>
+            <p class="relative z-10 mt-3 font-body text-on-dark-body">{item.desc}</p>
+          </SpotlightCard>
         ))}
       </div>
-    </div>
-  </SectionWrapper>
-
-  <!-- ═══ BLOG HIGHLIGHTS — Layout magazine ═══ -->
-  <SectionWrapper variant="light" class="!py-16 lg:!py-28" id="blog">
-    <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-3">
-      <!-- Coluna editorial -->
-      <div class="lg:col-span-1">
-        <p class="font-body text-sm uppercase tracking-widest text-caramelo">Blog</p>
-        <h2 class="mt-3 font-headline text-3xl font-bold lg:text-4xl">
-          Conteúdo que separa quem sabe de quem <span class="font-accent italic text-caramelo">acha</span> que sabe.
-        </h2>
-        <a href="/blog" class="mt-6 inline-block font-headline text-sm uppercase tracking-widest text-vinho hover:text-caramelo transition-colors duration-200">
-          Ver todos →
+      <div class="mt-12">
+        <a
+          href="/metodo"
+          class="link-underline font-headline text-sm uppercase tracking-widest text-on-dark-muted transition-colors duration-200 hover:text-on-dark-strong"
+        >
+          Conheça o Método C.A.D.A.R.N.
         </a>
       </div>
-      <!-- Cards -->
-      <div class="lg:col-span-2 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {blogHighlights.length > 0 ? (
-          blogHighlights.map((post, i) => (
-            <a href={`/blog/${post.id}`} class="group block">
-              <Card variant="blog" class={i === 0 ? 'sm:col-span-2' : ''}>
-                <Badge category={post.data.category} />
-                <h3 class="mt-3 font-headline text-lg font-bold text-vinho group-hover:text-caramelo transition-colors duration-200">{post.data.title}</h3>
-                <p class="mt-2 text-sm text-navy/70">{post.data.description}</p>
-              </Card>
-            </a>
-          ))
-        ) : (
-          <div class="sm:col-span-2 py-8 text-center">
-            <p class="font-body text-vinho/60">Artigos em preparação.</p>
-            <Button variant="secondary" size="md" href="/scan" class="mt-4">Faça seu Scan de Autoridade</Button>
+    </div>
+  </section>
+
+  <section id="prova" class="relative overflow-hidden border-t border-accent-metal/15 bg-surface-abyss py-16 lg:py-28">
+    <span class="v-label absolute left-4 top-24 hidden font-body text-[0.6rem] text-caramelo lg:block">Prova</span>
+    <div class="relative z-10 mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
+        <div class="lg:col-span-2">
+          <p class="font-body text-sm uppercase tracking-widest text-accent-metal">O problema é real</p>
+          <h2 class="v-tight reveal-on-scroll mt-3 font-headline text-3xl font-bold text-on-dark-strong lg:text-4xl">
+            O dono faz tudo.<br />O marketing não faz nada.
+          </h2>
+          <div class="mt-10 space-y-8">
+            {provas.map((p) => (
+              <div class="reveal-on-scroll">
+                <span class="mb-2 block h-px w-8 bg-accent-metal"></span>
+                <span class="font-accent text-5xl italic text-on-dark-strong">{p.valor}</span>
+                <p class="mt-1 font-body text-sm text-on-dark-muted">{p.desc}</p>
+                <p class="mt-0.5 font-body text-[10px] text-on-dark-muted/60">{p.fonte}</p>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+        <div class="grid grid-cols-2 gap-4 lg:col-span-3">
+          {cases.map((name) => (
+            <SpotlightCard client:visible className="clip-reveal-trigger reveal-on-scroll relative aspect-[4/3] overflow-hidden border border-accent-metal/10 bg-surface-raised/40">
+              <div class="clip-reveal pointer-events-none absolute inset-0 z-[1] bg-gradient-to-br from-accent-metal/15 to-transparent" aria-hidden="true"></div>
+              <div class="absolute inset-0 z-[2] flex flex-col justify-end bg-gradient-to-t from-surface-abyss/95 via-surface-abyss/40 to-transparent p-5">
+                <p class="font-headline text-sm font-bold text-on-dark-strong">{name}</p>
+                <p class="mt-1 text-xs text-accent-metal">Case em preparação</p>
+              </div>
+            </SpotlightCard>
+          ))}
+        </div>
       </div>
     </div>
-  </SectionWrapper>
+  </section>
 
-  <!-- ═══ CTA FINAL — Split com foto Fabiano trabalhando ═══ -->
-  <SectionWrapper variant="dark" class="!py-16 lg:!py-24">
-    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-      <div>
-        <h2 class="font-headline text-3xl font-bold lg:text-4xl">
-          Pronto para sair<br />do <span class="font-accent italic text-caramelo">achismo?</span>
-        </h2>
-        <p class="mt-4 max-w-md font-body text-lg text-offwhite/60">
-          O Scan de Autoridade analisa seu marketing em 4 pilares e entrega um diagnóstico com score de 0 a 100.
-        </p>
-        <CTABlock variant="hero" class="mt-8 !text-left" />
-      </div>
-      <div>
-        <PhotoPlaceholder label="Foto Fabiano — de costas, 3 telas, trabalhando" aspect="landscape" />
+  <Ticker client:visible items={['DO CAOS AO MÉTODO', 'DO MÉTODO AO LUCRO', 'DO LUCRO À LIBERDADE']} />
+
+  <section id="blog" class="bg-offwhite py-16 text-vinho lg:py-28">
+    <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-3">
+        <div class="lg:col-span-1">
+          <p class="font-body text-sm uppercase tracking-widest text-caramelo">Blog</p>
+          <h2 class="v-tight reveal-on-scroll mt-3 font-headline text-3xl font-bold lg:text-4xl">
+            Conteúdo que separa quem sabe de quem <span class="font-accent italic text-caramelo">acha</span> que sabe.
+          </h2>
+          <a href="/blog" class="link-underline mt-6 inline-block font-headline text-sm uppercase tracking-widest text-vinho transition-colors duration-200 hover:text-caramelo">
+            Ver todos
+          </a>
+        </div>
+        <div class="grid grid-cols-1 gap-6 lg:col-span-2 sm:grid-cols-2">
+          {blogHighlights.length > 0 ? (
+            blogHighlights.map((post, i) => (
+              <a href={`/blog/${post.id}`} class:list={['reveal-on-scroll group block', i === 0 && 'sm:col-span-2']}>
+                <article class="h-full border border-vinho/10 bg-offwhite p-5 shadow-card transition-shadow duration-200 hover:shadow-card-hover">
+                  <Badge category={post.data.category} />
+                  <h3 class="mt-3 font-headline text-lg font-bold text-vinho transition-colors duration-200 group-hover:text-caramelo">{post.data.title}</h3>
+                  <p class="mt-2 text-sm text-navy/70">{post.data.description}</p>
+                </article>
+              </a>
+            ))
+          ) : (
+            <div class="py-8 text-center sm:col-span-2">
+              <p class="font-body text-vinho/60">Artigos em preparação.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </SectionWrapper>
+  </section>
 
-  <!-- ═══ NEWSLETTER ═══ -->
-  <NewsletterBlock />
+  <section class="relative overflow-hidden py-24 lg:py-32" style="background: var(--cta-finale-bg);">
+    <GrainyBackground variant="hero" class="opacity-50" />
+    <WatermarkParallax client:visible text="LUCRO" align="center" topPercent={70} sizeClass="text-[clamp(8rem,26vw,22rem)]" driftPx={-110} />
+    <div class="relative z-10 mx-auto max-w-content px-4 text-center sm:px-6 lg:px-8">
+      <h2 class="v-tight reveal-on-scroll font-accent text-4xl italic text-on-dark-strong lg:text-6xl">
+        Pronto para sair do <span style="color: var(--cta-finale-accent);">achismo?</span>
+      </h2>
+      <p class="reveal-on-scroll mx-auto mt-5 max-w-xl font-body text-lg text-on-dark-body">
+        O Scan de Autoridade analisa seu marketing em 4 pilares e entrega um diagnóstico com score de 0 a 100.
+      </p>
+      <div class="mt-10 flex flex-col items-center gap-3">
+        <MagneticButton client:visible href="/scan">
+          Faça seu Scan de Autoridade
+        </MagneticButton>
+        <p class="font-body text-sm text-on-dark-muted">Grátis · 5 minutos · Sem compromisso</p>
+      </div>
+    </div>
+  </section>
 
-  <div id="sticky-cta" class="hidden" aria-hidden="true">
-    <CTABlock variant="sticky" />
-  </div>
+  <section class="border-t border-accent-metal/15 bg-surface-abyss py-16 lg:py-20">
+    <div class="mx-auto max-w-article px-4 text-center">
+      <h3 class="font-headline text-2xl font-bold text-on-dark-strong lg:text-3xl">
+        Conteúdo que separa quem sabe de quem acha que sabe.
+      </h3>
+      <p class="mt-3 font-body text-on-dark-body">
+        Direto na caixa. Sem spam, sem enrolação.
+      </p>
+      <form id="newsletter-form-home" class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <input
+          type="email"
+          name="email"
+          placeholder="seu@email.com"
+          required
+          class="w-full rounded-none border border-accent-metal/30 bg-surface-raised/40 px-4 py-3 font-body text-on-dark-strong placeholder:text-on-dark-muted focus:border-accent-metal focus:outline-none focus:ring-1 focus:ring-accent-metal sm:max-w-xs"
+        />
+        <button
+          type="submit"
+          class="rounded-none bg-gradient-to-br from-accent-metal-hi to-accent-metal px-6 py-3 font-headline font-semibold uppercase tracking-wider text-surface-abyss transition-shadow duration-300 hover:shadow-glow"
+        >
+          Quero receber
+        </button>
+      </form>
+      <p id="newsletter-feedback-home" class="mt-3 hidden font-body text-sm text-on-dark-muted"></p>
+    </div>
+  </section>
 
   <script>
-    const hero = document.getElementById('hero');
-    const stickyCta = document.getElementById('sticky-cta');
+    const form = document.getElementById('newsletter-form-home') as HTMLFormElement | null;
+    const feedback = document.getElementById('newsletter-feedback-home');
 
-    if (hero && stickyCta) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          const visible = !entry.isIntersecting;
-          stickyCta.classList.toggle('hidden', !visible);
-          stickyCta.setAttribute('aria-hidden', String(!visible));
-        },
-        { threshold: 0.1 }
-      );
-      observer.observe(hero);
-    }
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (form.elements.namedItem('email') as HTMLInputElement)?.value;
+
+      try {
+        const res = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        if (feedback) {
+          feedback.textContent = res.ok
+            ? 'Inscrição confirmada. Até a próxima edição.'
+            : 'Algo deu errado. Tente novamente.';
+          feedback.classList.remove('hidden');
+        }
+
+        if (res.ok) form.reset();
+      } catch {
+        if (feedback) {
+          feedback.textContent = 'Algo deu errado. Tente novamente.';
+          feedback.classList.remove('hidden');
+        }
+      }
+    });
   </script>
 </BaseLayout>

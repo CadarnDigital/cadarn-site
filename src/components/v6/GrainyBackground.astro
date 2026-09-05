@@ -1,0 +1,63 @@
+---
+/**
+ * GrainyBackground (v6) — fundo dark premium, zero JS.
+ * Cópia da v5 (= v4). Gradiente radial (hero/vinho = dominante; navy = apoio) +
+ * camada de grão via feTurbulence SVG. Filtro com id próprio da v6 para não
+ * colidir com instâncias de outras versões caso coexistam.
+ *
+ * ELEVAÇÃO v6 (movimento ambiente perpétuo, item 3): a camada de grão passa a
+ * "respirar" muito devagar (opacity oscilando ~0.05->0.08 em loop ~16s). É um
+ * dos elementos que mantêm a tela SEMPRE viva sem agitar — movimento de baixa
+ * frequência. Em modo avaliação (.v-eval no body) roda mesmo com reduced-motion;
+ * caso contrário respeita a preferência e fica estático.
+ */
+interface Props {
+  variant?: 'hero' | 'vinho' | 'navy';
+  class?: string;
+}
+
+const GRADIENTS = {
+  hero: 'var(--gradient-hero)',
+  vinho: 'var(--gradient-vinho)',
+  navy: 'var(--gradient-navy)',
+} as const;
+
+const { variant = 'hero', class: className } = Astro.props as Props;
+const gradient = GRADIENTS[variant ?? 'hero'];
+---
+
+<div
+  class:list={['grainy-bg', className]}
+  style={`background: ${gradient};`}
+  aria-hidden="true"
+>
+  <svg class="grainy-bg__noise v6-grain-breathe" xmlns="http://www.w3.org/2000/svg">
+    <filter id="grainy-noise-v6">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.8"
+        numOctaves="3"
+        stitchTiles="stitch"
+      />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grainy-noise-v6)" />
+  </svg>
+</div>
+
+<style>
+  .grainy-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .grainy-bg__noise {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+  }
+</style>

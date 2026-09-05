@@ -1,0 +1,58 @@
+---
+/**
+ * HeroV6 — hero dark premium ELEVADO. Mantém a estrutura da v5 (HeroSlider de
+ * fundo + GrainyBackground + HeadlineReveal + MagneticButton + BorderDrawButton)
+ * e eleva o movimento:
+ *  - HeroSlider v6: slides DUOTONE vinho/caramelo + Ken Burns (item 2).
+ *  - GrainyBackground v6: grão que respira (item 3 — ambiente perpétuo).
+ *  - WatermarkParallax "CADARN": tipografia gigante de fundo com parallax,
+ *    reforçando a sensação de tela sempre viva já no primeiro quadro (itens 3+5).
+ *
+ * A bússola decorativa do hero é provida pelo IntroRitual (layoutId
+ * "cadarn-compass"): parte do centro no ritual de abertura e POUSA neste slot
+ * (right-0, top-1/2), continuando a girar para sempre.
+ */
+import GrainyBackground from './GrainyBackground.astro';
+import { HeroSlider } from './HeroSlider';
+import { WatermarkParallax } from './WatermarkParallax';
+import { HeadlineReveal } from './HeadlineReveal';
+import { MagneticButton } from './MagneticButton';
+import { BorderDrawButton } from './BorderDrawButton';
+
+const HERO_LINES = ['Do caos ao método.', 'Do método ao lucro.', 'Do lucro à liberdade.'];
+---
+
+<section id="hero" class="relative overflow-hidden">
+  <!-- Fundo que cicla entre slides duotone vinho/caramelo com Ken Burns -->
+  <HeroSlider client:load />
+  <!-- Watermark gigante com parallax (ambiente perpétuo já no hero) -->
+  <WatermarkParallax client:visible text="CADARN" align="left" topPercent={58} />
+  <!-- Textura de grão (respira devagar) por cima do slider -->
+  <GrainyBackground variant="hero" />
+
+  <!-- A bússola decorativa do hero é provida pelo IntroRitual (layoutId).
+       Slot de destino documentado: right-0, top-1/2, 520x520, opacity ~0.05. -->
+
+  <div class="relative z-10 mx-auto flex min-h-[92vh] max-w-content flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
+    <p class="font-body text-xs uppercase tracking-[0.4em] text-accent-metal">
+      Engenharia de Lucro
+    </p>
+
+    <div class="mt-6 max-w-4xl">
+      <HeadlineReveal client:load lines={HERO_LINES} />
+    </div>
+
+    <p class="mt-8 max-w-xl font-body text-lg leading-relaxed text-on-dark-body">
+      Marketing, gestão e growth integrados num sistema único para prestadores de serviço premium.
+    </p>
+
+    <div class="mt-12 flex flex-wrap items-center gap-5">
+      <MagneticButton client:visible href="/scan">
+        Faça seu Scan de Autoridade
+      </MagneticButton>
+      <BorderDrawButton client:visible href="/metodo">
+        Conheça o Método
+      </BorderDrawButton>
+    </div>
+  </div>
+</section>
