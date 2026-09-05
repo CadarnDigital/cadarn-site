@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  site: 'https://cadarn.com.br',
+  site: 'https://cadarn.tech',
   output: 'static',
   adapter: vercel(),
   integrations: [react(), mdx(), sitemap()],
