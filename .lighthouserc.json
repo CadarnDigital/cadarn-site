@@ -1,8 +1,8 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": "./dist",
-      "url": ["/", "/metodo", "/blog", "/scan"]
+      "staticDistDir": "./dist/client",
+      "url": ["/", "/metodo", "/blog"]
     },
     "assert": {
       "assertions": {
