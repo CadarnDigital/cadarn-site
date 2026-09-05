@@ -2,7 +2,11 @@
   "ci": {
     "collect": {
       "staticDistDir": "./dist/client",
-      "url": ["/", "/metodo", "/blog"]
+      "url": ["/", "/metodo", "/blog"],
+      "numberOfRuns": 3,
+      "settings": {
+        "throttlingMethod": "simulate"
+      }
     },
     "assert": {
       "assertions": {
